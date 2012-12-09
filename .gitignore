@@ -1,0 +1,5 @@
+*.o
+libedit-20120601-3.0/
+libtscb/
+boost.atomic/
+elcc_test
