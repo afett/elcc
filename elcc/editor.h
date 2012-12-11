@@ -50,8 +50,8 @@ public:
 	void run();
 
 private:
-	editor(const &editor);
-	editor & operator=(const &editor);
+	editor(editor const&);
+	editor & operator=(editor const&);
 
 	impl::editor *impl_;
 };
