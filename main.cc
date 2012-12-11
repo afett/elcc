@@ -20,6 +20,9 @@ int main(int argc, char *argv[])
 	elcc::editor el(argv[0], reactor);
 
 	el.prompt_cb(&fancy_prompt);
+	el.line_cb(&on_line);
+
+	el.run();
 
 	for(;;) {
 		reactor.dispatch();
