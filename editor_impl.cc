@@ -144,7 +144,7 @@ editor * editor::self(EditLine *el)
 {
 	void *data(0);
 	el_get(el, EL_CLIENTDATA, &data);
-	return static_cast<editor *>(data);
+	return reinterpret_cast<editor *>(data);
 }
 
 void editor::on_readable(int event)
