@@ -45,6 +45,9 @@ void editor::prompt_cb(prompt_function const& cb)
 void editor::line_cb(line_function const& cb)
 { impl_->line_cb(cb); }
 
+void editor::eof_cb(eof_function const& cb)
+{ impl_->eof_cb(cb); }
+
 void editor::run()
 { impl_->run(); }
 

@@ -35,6 +35,7 @@ namespace elcc {
 
 typedef boost::function<std::string(void)> prompt_function;
 typedef boost::function<bool(std::string)> line_function;
+typedef boost::function<void(void)> eof_function;
 
 namespace impl {
 class editor;
@@ -48,6 +49,7 @@ public:
 	void prompt(std::string const&);
 	void prompt_cb(prompt_function const& prompt);
 	void line_cb(line_function const& line);
+	void eof_cb(eof_function const&);
 	void run();
 
 private:

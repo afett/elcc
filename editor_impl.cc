@@ -68,6 +68,7 @@ editor::editor(std::string const& argv0, tscb::posix_reactor_service & reactor)
 
 	el_set(el_, EL_CLIENTDATA, this);
 	el_set(el_, EL_EDITOR, "emacs");
+	el_set(el_, EL_ADDFN, "elcc-eof", "end of file", &editor::internal_eof_cb);
 	el_set(el_, EL_HIST, &::history, history_.get());
 }
 
@@ -112,6 +113,12 @@ const char * editor::custom_prompt_cb(EditLine *el)
 	return elcc::impl::editor::self(el)->custom_prompt_().c_str();
 }
 
+unsigned char editor::internal_eof_cb(EditLine *el, int)
+{
+	elcc::impl::editor::self(el)->on_eof_();
+	return CC_EOF;
+}
+
 void editor::prompt_cb(prompt_function const& prompt)
 {
 	custom_prompt_ = prompt;
@@ -126,6 +133,12 @@ void editor::prompt(std::string const& prompt)
 
 void editor::line_cb(line_function const& cb)
 { on_line_ = cb; }
+
+void editor::eof_cb(eof_function const& cb)
+{
+	on_eof_ = cb;
+	el_set(el_, EL_BIND, "^D", "elcc-eof", NULL);
+}
 
 editor::~editor()
 {
