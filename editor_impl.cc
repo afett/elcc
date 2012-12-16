@@ -34,6 +34,56 @@
 
 #include <editor_impl.h>
 
+namespace {
+
+elcc::impl::editor * get_editor(EditLine *el)
+{
+	void *data(0);
+	el_get(el, EL_CLIENTDATA, &data);
+	return reinterpret_cast<elcc::impl::editor *>(data);
+}
+
+template <int N>
+unsigned char function_wrapper(EditLine *el, int c)
+{
+	elcc::impl::editor *editor(get_editor(el));
+	switch (editor->call(N, c)) {
+	case elcc::normal:       return CC_NORM;
+	case elcc::newline:      return CC_NEWLINE;
+	case elcc::eof:          return CC_EOF;
+	case elcc::arghack:      return CC_ARGHACK;
+	case elcc::refresh:      return CC_REFRESH;
+	case elcc::cursor:       return CC_CURSOR;
+	case elcc::error:        return CC_ERROR;
+	case elcc::fatal:        return CC_FATAL;
+	case elcc::redisplay:    return CC_REDISPLAY;
+	case elcc::refresh_beep: return CC_REFRESH_BEEP;
+	}
+	return CC_FATAL;
+}
+
+typedef unsigned char (*wrapper_function)(EditLine *, int);
+
+wrapper_function get_wrapper(size_t n)
+{
+#define CASE_N(index) case index: return &function_wrapper<index>;
+	switch (n) {
+		CASE_N(0x00); CASE_N(0x01); CASE_N(0x02); CASE_N(0x03);
+		CASE_N(0x04); CASE_N(0x05); CASE_N(0x06); CASE_N(0x07);
+		CASE_N(0x08); CASE_N(0x09); CASE_N(0x0a); CASE_N(0x0b);
+		CASE_N(0x0c); CASE_N(0x0d); CASE_N(0x0e); CASE_N(0x0f);
+
+		CASE_N(0x10); CASE_N(0x11); CASE_N(0x12); CASE_N(0x13);
+		CASE_N(0x14); CASE_N(0x15); CASE_N(0x16); CASE_N(0x17);
+		CASE_N(0x18); CASE_N(0x19); CASE_N(0x1a); CASE_N(0x1b);
+		CASE_N(0x1c); CASE_N(0x1d); CASE_N(0x1e); CASE_N(0x1f);
+	}
+#undef CASE_N
+	return 0;
+}
+
+} // namespace
+
 namespace elcc {
 namespace impl {
 
@@ -68,7 +118,6 @@ editor::editor(std::string const& argv0, tscb::posix_reactor_service & reactor)
 
 	el_set(el_, EL_CLIENTDATA, this);
 	el_set(el_, EL_EDITOR, "emacs");
-	el_set(el_, EL_ADDFN, "elcc-eof", "end of file", &editor::internal_eof_cb);
 	el_set(el_, EL_HIST, &::history, history_.get());
 }
 
@@ -103,20 +152,34 @@ void editor::run()
 	running_ = true;
 }
 
+function_return editor::call(size_t n, int c) const
+{
+	return functions_[n](c);
+}
+
 const char * editor::internal_prompt_cb(EditLine *el)
 {
-	return elcc::impl::editor::self(el)->internal_prompt_.c_str();
+	return get_editor(el)->internal_prompt_.c_str();
 }
 
 const char * editor::custom_prompt_cb(EditLine *el)
 {
-	return elcc::impl::editor::self(el)->custom_prompt_().c_str();
+	return get_editor(el)->custom_prompt_().c_str();
 }
 
-unsigned char editor::internal_eof_cb(EditLine *el, int)
+void editor::add_function(std::string const& name, std::string const& descr, editor_function const& cb)
 {
-	elcc::impl::editor::self(el)->on_eof_();
-	return CC_EOF;
+	wrapper_function fn(get_wrapper(fn_index_));
+	if (fn) {
+		el_set(el_, EL_ADDFN, name.c_str(), descr.c_str(), fn);
+		functions_[fn_index_] = cb;
+		++fn_index_;
+	}
+}
+
+void editor::bind(std::string const& key, std::string const& name)
+{
+	el_set(el_, EL_BIND, key.c_str(), name.c_str(), NULL);
 }
 
 void editor::prompt_cb(prompt_function const& prompt)
@@ -134,12 +197,6 @@ void editor::prompt(std::string const& prompt)
 void editor::line_cb(line_function const& cb)
 { on_line_ = cb; }
 
-void editor::eof_cb(eof_function const& cb)
-{
-	on_eof_ = cb;
-	el_set(el_, EL_BIND, "^D", "elcc-eof", NULL);
-}
-
 editor::~editor()
 {
 	if (stdin_.connected()) {
@@ -151,13 +208,6 @@ editor::~editor()
 	if (el_) {
 		el_end(el_);
 	}
-}
-
-editor * editor::self(EditLine *el)
-{
-	void *data(0);
-	el_get(el, EL_CLIENTDATA, &data);
-	return reinterpret_cast<editor *>(data);
 }
 
 void editor::on_readable(int event)
@@ -177,4 +227,4 @@ void editor::on_readable(int event)
 	}
 }
 
-}}
+}} // namespace elcc::impl

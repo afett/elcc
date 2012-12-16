@@ -17,10 +17,11 @@ std::string fancy_prompt()
 	return "ok> ";
 }
 
-void exit_editor(tscb::posix_reactor_service *reactor, bool *stop)
+elcc::function_return eof_handler(tscb::posix_reactor_service *reactor, bool *stop)
 {
 	*stop = true;
 	reactor->get_eventtrigger().set();
+	return elcc::eof;
 }
 
 int main(int argc, char *argv[])
@@ -34,7 +35,8 @@ int main(int argc, char *argv[])
 	el.line_cb(&on_line);
 
 	bool stop(false);
-	el.eof_cb(boost::bind(&exit_editor, &reactor, &stop));
+	el.add_function("exit", "exit at eof", boost::bind(&eof_handler, &reactor, &stop));
+	el.bind("^D", "exit");
 
 	el.run();
 

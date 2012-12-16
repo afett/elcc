@@ -54,15 +54,15 @@ public:
 	void prompt(std::string const&);
 	void prompt_cb(prompt_function const&);
 	void line_cb(line_function const&);
-	void eof_cb(eof_function const&);
+	void add_function(std::string const&, std::string const&, editor_function const&);
+	function_return call(size_t , int) const;
+	void bind(std::string const&, std::string const&);
 	void run();
 	~editor();
 
 private:
-	static editor * self(EditLine *);
 	static const char * custom_prompt_cb(EditLine *);
 	static const char * internal_prompt_cb(EditLine *);
-	static unsigned char internal_eof_cb(EditLine *, int);
 	void on_readable(int);
 
 	tscb::posix_reactor_service & reactor_;
@@ -70,9 +70,11 @@ private:
 	prompt_function custom_prompt_;
 	std::string internal_prompt_;
 	line_function on_line_;
-	eof_function on_eof_;
 	tscb::connection stdin_;
 	history history_;
+	size_t fn_index_;
+	editor_function functions_[32];
+
 	bool running_;
 };
 

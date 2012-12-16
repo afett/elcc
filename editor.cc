@@ -45,8 +45,11 @@ void editor::prompt_cb(prompt_function const& cb)
 void editor::line_cb(line_function const& cb)
 { impl_->line_cb(cb); }
 
-void editor::eof_cb(eof_function const& cb)
-{ impl_->eof_cb(cb); }
+void editor::add_function(std::string const& name, std::string const& descr, editor_function const& cb)
+{ impl_->add_function(name, descr, cb); }
+
+void editor::bind(std::string const& key, std::string const& name)
+{ impl_->bind(key, name); }
 
 void editor::run()
 { impl_->run(); }
