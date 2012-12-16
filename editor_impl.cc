@@ -34,15 +34,6 @@
 
 #include <editor_impl.h>
 
-namespace {
-
-const char * default_prompt(EditLine *)
-{
-	return "$ ";
-}
-
-}
-
 namespace elcc {
 namespace impl {
 
@@ -76,7 +67,6 @@ editor::editor(std::string const& argv0, tscb::posix_reactor_service & reactor)
 	}
 
 	el_set(el_, EL_CLIENTDATA, this);
-	el_set(el_, EL_PROMPT, &::default_prompt);
 	el_set(el_, EL_EDITOR, "emacs");
 	el_set(el_, EL_HIST, &::history, history_.get());
 }
@@ -112,15 +102,26 @@ void editor::run()
 	running_ = true;
 }
 
-const char * editor::custom_prompt(EditLine *el)
+const char * editor::internal_prompt_cb(EditLine *el)
 {
-	  return elcc::impl::editor::self(el)->prompt_().c_str();
+	return elcc::impl::editor::self(el)->internal_prompt_.c_str();
+}
+
+const char * editor::custom_prompt_cb(EditLine *el)
+{
+	return elcc::impl::editor::self(el)->custom_prompt_().c_str();
 }
 
 void editor::prompt_cb(prompt_function const& prompt)
 {
-	prompt_ = prompt;
-	el_set(el_, EL_PROMPT, &editor::custom_prompt);
+	custom_prompt_ = prompt;
+	el_set(el_, EL_PROMPT, &editor::custom_prompt_cb);
+}
+
+void editor::prompt(std::string const& prompt)
+{
+	internal_prompt_ = prompt;
+	el_set(el_, EL_PROMPT, &editor::internal_prompt_cb);
 }
 
 void editor::line_cb(line_function const& cb)

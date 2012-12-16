@@ -50,20 +50,23 @@ private:
 
 class editor {
 public:
-	editor(std::string const& argv0, tscb::posix_reactor_service & reactor);
-	void prompt_cb(prompt_function const& prompt);
-	void line_cb(line_function const& cb);
+	editor(std::string const&, tscb::posix_reactor_service &);
+	void prompt(std::string const&);
+	void prompt_cb(prompt_function const&);
+	void line_cb(line_function const&);
 	void run();
 	~editor();
 
 private:
-	static editor * self(EditLine *el);
-	static const char * custom_prompt(EditLine *el);
-	void on_readable(int event);
+	static editor * self(EditLine *);
+	static const char * custom_prompt_cb(EditLine *);
+	static const char * internal_prompt_cb(EditLine *);
+	void on_readable(int);
 
 	tscb::posix_reactor_service & reactor_;
 	EditLine *el_;
-	prompt_function prompt_;
+	prompt_function custom_prompt_;
+	std::string internal_prompt_;
 	line_function on_line_;
 	tscb::connection stdin_;
 	history history_;

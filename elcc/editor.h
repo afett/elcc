@@ -45,6 +45,7 @@ public:
 	editor(std::string const& argv0, tscb::posix_reactor_service & reactor);
 	~editor();
 
+	void prompt(std::string const&);
 	void prompt_cb(prompt_function const& prompt);
 	void line_cb(line_function const& line);
 	void run();

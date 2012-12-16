@@ -36,6 +36,9 @@ editor::editor(std::string const& argv0, tscb::posix_reactor_service & reactor)
 editor::~editor()
 { delete impl_; }
 
+void editor::prompt(std::string const& prompt)
+{ impl_->prompt(prompt); }
+
 void editor::prompt_cb(prompt_function const& cb)
 { impl_->prompt_cb(cb); }
 
