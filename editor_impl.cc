@@ -87,23 +87,6 @@ wrapper_function get_wrapper(size_t n)
 namespace elcc {
 namespace impl {
 
-history::history(size_t size)
-:
-	history_(history_init())
-{
-	BOOST_ASSERT(history_);
-	 ::history(history_, &event_, H_SETSIZE, size);
-	 ::history(history_, &event_, H_SETUNIQUE, 1);
-}
-
-History *history::get() const
-{ return history_; }
-
-void history::add(std::string const& line)
-{ ::history(history_, &event_, H_ENTER, line.c_str()); }
-
-history::~history()
-{ history_end(history_); }
 
 editor::editor(std::string const& argv0, tscb::posix_reactor_service & reactor)
 :
@@ -188,6 +171,11 @@ void editor::add_function(std::string const& name, std::string const& descr, edi
 void editor::bind(std::string const& key, std::string const& name)
 {
 	el_set(el_, EL_BIND, key.c_str(), name.c_str(), NULL);
+}
+
+elcc::history & editor::history()
+{
+	return history_;
 }
 
 void editor::prompt_cb(prompt_function const& prompt)

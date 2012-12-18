@@ -50,6 +50,7 @@ enum function_return {
 };
 
 class editor;
+class history;
 
 namespace impl {
 class editor;
@@ -87,6 +88,9 @@ public:
 	// @arg key name of the key "^A" for example
 	// @arg function name of the custom or buildin function
 	void bind(std::string const&, std::string const&);
+
+	// get the history object
+	elcc::history & history() const;
 
 	// run the editor
 	// this will set the terminal to raw mode

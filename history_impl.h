@@ -24,47 +24,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef EL_CC_EDITOR_IMPL_H
-#define EL_CC_EDITOR_IMPL_H
+#ifndef ELCC_HISTORY_IMPL_H
+#define ELCC_HISTORY_IMPL_H
 
-#include <stddef.h>
+#include <string>
 
 #include <histedit.h>
 
 #include <elcc/editor.h>
-#include <history_impl.h>
+#include <elcc/history.h>
 
 namespace elcc {
 namespace impl {
 
-class editor {
+class history : public elcc::history {
 public:
-	editor(std::string const&, tscb::posix_reactor_service &);
-	void prompt(std::string const&);
-	void prompt_cb(prompt_function const&);
-	void line_cb(line_function const&);
-	void add_function(std::string const&, std::string const&, editor_function const&);
-	function_return call(size_t , int) const;
-	void bind(std::string const&, std::string const&);
-	elcc::history & history();
-	void run();
-	~editor();
+	history(size_t size);
+	History *get() const;
+
+	size_t size();
+	void clear();
+	void add(std::string const&);
+	void append(std::string const&);
+	void enter(std::string const&);
+
+	~history();
 
 private:
-	static const char * custom_prompt_cb(EditLine *);
-	static const char * internal_prompt_cb(EditLine *);
-	void on_readable(int);
-
-	tscb::posix_reactor_service & reactor_;
-	EditLine *el_;
-	prompt_function custom_prompt_;
-	std::string internal_prompt_;
-	line_function on_line_;
-	tscb::connection stdin_;
-	elcc::impl::history history_;
-	size_t fn_index_;
-	editor_function functions_[32];
-	bool running_;
+	History *history_;
+	HistEvent event_;
 };
 
 }}

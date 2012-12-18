@@ -24,49 +24,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef EL_CC_EDITOR_IMPL_H
-#define EL_CC_EDITOR_IMPL_H
+#ifndef ELCC_HISTORY_H
+#define ELCC_HISTORY_H
 
-#include <stddef.h>
-
-#include <histedit.h>
-
-#include <elcc/editor.h>
-#include <history_impl.h>
+#include <string>
 
 namespace elcc {
-namespace impl {
 
-class editor {
+class history {
 public:
-	editor(std::string const&, tscb::posix_reactor_service &);
-	void prompt(std::string const&);
-	void prompt_cb(prompt_function const&);
-	void line_cb(line_function const&);
-	void add_function(std::string const&, std::string const&, editor_function const&);
-	function_return call(size_t , int) const;
-	void bind(std::string const&, std::string const&);
-	elcc::history & history();
-	void run();
-	~editor();
-
-private:
-	static const char * custom_prompt_cb(EditLine *);
-	static const char * internal_prompt_cb(EditLine *);
-	void on_readable(int);
-
-	tscb::posix_reactor_service & reactor_;
-	EditLine *el_;
-	prompt_function custom_prompt_;
-	std::string internal_prompt_;
-	line_function on_line_;
-	tscb::connection stdin_;
-	elcc::impl::history history_;
-	size_t fn_index_;
-	editor_function functions_[32];
-	bool running_;
+	virtual size_t size() = 0;
+	virtual void clear() = 0;
+	virtual void add(std::string const&) = 0;
+	virtual void append(std::string const&) = 0;
+	virtual void enter(std::string const&) = 0;
+	virtual ~history();
 };
 
-}}
+}
 
 #endif
