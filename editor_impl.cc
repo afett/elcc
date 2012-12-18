@@ -109,12 +109,20 @@ editor::editor(std::string const& argv0, tscb::posix_reactor_service & reactor)
 :
 	reactor_(reactor),
 	el_(el_init(argv0.c_str(), stdin, stdout, stderr)),
+	custom_prompt_(),
+	internal_prompt_(),
+	on_line_(),
+	stdin_(),
 	history_(INT_MAX),
+	fn_index_(0),
+	functions_(),
 	running_(false)
 {
 	if (!el_) {
 		throw std::runtime_error("failed to initialize editline");
 	}
+
+	memset(functions_, 0, sizeof(functions_));
 
 	el_set(el_, EL_CLIENTDATA, this);
 	el_set(el_, EL_EDITOR, "emacs");

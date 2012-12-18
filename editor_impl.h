@@ -74,7 +74,6 @@ private:
 	history history_;
 	size_t fn_index_;
 	editor_function functions_[32];
-
 	bool running_;
 };
 
