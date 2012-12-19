@@ -1,14 +1,17 @@
-elcc line editor class for C++ [https://github.com/afett/elcc]
+elcc C++ libedit wrapper [https://github.com/afett/elcc]
 
-elcc is a BSD licensed asyncronous (aka poll()) line editor.
+elcc is a wrapper for libedit. It is intended to be used with
+(for example poll() based) event loops.
+
+An integration with the libtscb reactor is provided.
+
+elcc is (2 Clause) BSD licensed like libedit.
 It will run on linux and maybe other posix like OSes.
 
-It is an integration of libtscb (from http://www.chaoticmind.net/~hcb/projects/libtscb/)
-and libedit (from http://www.thrysoee.dk/editline/).
-
-elcc depends on these two libraries and on boost.
-(assert, bind, function and format)
-
+dependencies:
+ * libedit [http://www.thrysoee.dk/editline/]
+ * boost (assert, bind, function and format) [http://www.boost.org/]
+ * libtscb (optional) [http://www.chaoticmind.net/~hcb/projects/libtscb/]
 
 elcc itself is released under the following license:
 
