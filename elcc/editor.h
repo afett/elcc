@@ -29,7 +29,6 @@
 
 #include <string>
 #include <boost/function.hpp>
-#include <tscb/reactor>
 
 namespace elcc {
 
@@ -58,6 +57,7 @@ class editor;
 
 typedef boost::function<std::string(void)> prompt_function;
 typedef boost::function<bool(std::string)> line_function;
+typedef boost::function<void(int, bool)> watch_function;
 
 // custom editor function, argument is the key entered
 typedef boost::function<function_return(int)> editor_function;
@@ -65,8 +65,10 @@ typedef boost::function<function_return(int)> editor_function;
 class editor {
 public:
 
-	editor(std::string const& argv0, tscb::posix_reactor_service & reactor);
+	editor(std::string const& argv0, watch_function const&);
 	~editor();
+
+	void handle_io();
 
 	// set the prompt
 	void prompt(std::string const&);

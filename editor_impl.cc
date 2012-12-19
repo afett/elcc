@@ -24,6 +24,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <errno.h>
 #include <fcntl.h>
 
 #include <stdexcept>
@@ -88,18 +89,18 @@ namespace elcc {
 namespace impl {
 
 
-editor::editor(std::string const& argv0, tscb::posix_reactor_service & reactor)
+editor::editor(std::string const& argv0, watch_function const& watch)
 :
-	reactor_(reactor),
+	watch_(watch),
 	el_(el_init(argv0.c_str(), stdin, stdout, stderr)),
 	custom_prompt_(),
 	internal_prompt_(),
 	on_line_(),
-	stdin_(),
 	history_(INT_MAX),
 	fn_index_(0),
 	functions_(),
-	running_(false)
+	running_(false),
+	fd_(-1)
 {
 	if (!el_) {
 		throw std::runtime_error("failed to initialize editline");
@@ -120,25 +121,23 @@ void editor::run()
 	el_set(el_, EL_TERMINAL, NULL);
 	el_set(el_, EL_PREP_TERM, 1);
 
-	int fd(fileno(stdin));
+	fd_ = fileno(stdin);
 
-	int flags=fcntl(fd, F_GETFL);
+	int flags=fcntl(fd_, F_GETFL);
 	if (flags == -1) {
 		throw std::runtime_error(boost::str(
 			boost::format("fcntl(%i, F_GETFL): %s")
-				% fd % strerror(errno)));
+				% fd_ % strerror(errno)));
 	}
 
 	flags |= O_NONBLOCK;
-	if (fcntl(fileno(stdin), F_SETFL, flags) == -1) {
+	if (fcntl(fd_, F_SETFL, flags) == -1) {
 		throw std::runtime_error(boost::str(
 			boost::format("fcntl(%i, F_SETFL): %s")
-				% fd % strerror(errno)));
+				% fd_ % strerror(errno)));
 	}
 
-	stdin_ = reactor_.watch(
-		boost::bind(&editor::on_readable, this, _1),
-		fd, tscb::ioready_input);
+	watch_(fd_, true);
 
 	running_ = true;
 }
@@ -195,9 +194,7 @@ void editor::line_cb(line_function const& cb)
 
 editor::~editor()
 {
-	if (stdin_.connected()) {
-		stdin_.disconnect();
-	}
+	watch_(fd_, false);
 
 	el_set(el_, EL_PREP_TERM, 0);
 
@@ -206,19 +203,17 @@ editor::~editor()
 	}
 }
 
-void editor::on_readable(int event)
+void editor::handle_io()
 {
 	int count(0);
 	const char *line(el_gets(el_, &count));
-	if (!line) {
+	if (!line || count < 1) {
 		return;
 	}
 
 	if (line[count - 1] == '\n') {
 		el_set(el_, EL_UNBUFFERED, 0);
-		if (count > 1 && on_line_(std::string(line, count -1))) {
-			history_.add(line);
-		}
+		on_line_(std::string(line, count -1));
 		el_set(el_, EL_UNBUFFERED, 1);
 	}
 }

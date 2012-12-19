@@ -4,7 +4,7 @@
 #include <boost/bind.hpp>
 #include <tscb/dispatch>
 
-#include <elcc/editor.h>
+#include <elcc/tscb/editor.h>
 
 bool on_line(std::string const& line)
 {
@@ -27,9 +27,10 @@ elcc::function_return eof_handler(tscb::posix_reactor_service *reactor, bool *st
 int main(int argc, char *argv[])
 {
 	tscb::posix_reactor reactor;
+	tscb::connection conn;
 
 	setlocale(LC_CTYPE, "");
-	elcc::editor el(argv[0], reactor);
+	elcc::tscb::editor el("elcc", reactor);
 
 	el.prompt_cb(&fancy_prompt);
 	el.line_cb(&on_line);

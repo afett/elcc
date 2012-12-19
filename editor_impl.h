@@ -39,7 +39,8 @@ namespace impl {
 
 class editor {
 public:
-	editor(std::string const&, tscb::posix_reactor_service &);
+	editor(std::string const&, watch_function const&);
+	void handle_io();
 	void prompt(std::string const&);
 	void prompt_cb(prompt_function const&);
 	void line_cb(line_function const&);
@@ -53,18 +54,17 @@ public:
 private:
 	static const char * custom_prompt_cb(EditLine *);
 	static const char * internal_prompt_cb(EditLine *);
-	void on_readable(int);
 
-	tscb::posix_reactor_service & reactor_;
+	watch_function watch_;
 	EditLine *el_;
 	prompt_function custom_prompt_;
 	std::string internal_prompt_;
 	line_function on_line_;
-	tscb::connection stdin_;
 	elcc::impl::history history_;
 	size_t fn_index_;
 	editor_function functions_[32];
 	bool running_;
+	int fd_;
 };
 
 }}

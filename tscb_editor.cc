@@ -24,37 +24,45 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <elcc/editor.h>
-#include <editor_impl.h>
+#include <boost/bind.hpp>
+
+#include <tscb/reactor>
+
+#include <elcc/tscb/editor.h>
 
 namespace elcc {
+namespace tscb {
 
-editor::editor(std::string const& argv0, watch_function const& watch)
-	: impl_(new impl::editor(argv0, watch))
+editor::editor(std::string const& name, ::tscb::posix_reactor_service & reactor)
+	:
+		elcc::editor(name, boost::bind(&editor::toggle_watch, this, _1, _2)),
+		reactor_(reactor),
+		conn_()
 { }
 
-editor::~editor()
-{ delete impl_; }
+void editor::toggle_watch(int fd, bool on)
+{
+	if (!on && conn_.connected()) {
+		conn_.disconnect();
+		return;
+	}
 
-void editor::handle_io()
-{ impl_->handle_io(); }
-
-void editor::prompt(std::string const& prompt)
-{ impl_->prompt(prompt); }
-
-void editor::prompt_cb(prompt_function const& cb)
-{ impl_->prompt_cb(cb); }
-
-void editor::line_cb(line_function const& cb)
-{ impl_->line_cb(cb); }
-
-void editor::add_function(std::string const& name, std::string const& descr, editor_function const& cb)
-{ impl_->add_function(name, descr, cb); }
-
-void editor::bind(std::string const& key, std::string const& name)
-{ impl_->bind(key, name); }
-
-void editor::run()
-{ impl_->run(); }
-
+	conn_ = reactor_.watch(boost::bind(&editor::on_ioready, this, _1),
+		fd, ::tscb::ioready_input);
 }
+
+void editor::on_ioready(::tscb::ioready_events ev)
+{
+	if (ev & ::tscb::ioready_input) {
+		handle_io();
+	}
+}
+
+editor::~editor()
+{
+	if (conn_.connected()) {
+		conn_.disconnect();
+	}
+}
+
+}}

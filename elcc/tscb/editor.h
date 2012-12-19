@@ -24,37 +24,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef ELCC_TSCB_EDITOR_H
+#define ELCC_TSCB_EDITOR_H
+
+#include <tscb/signal>
+
 #include <elcc/editor.h>
-#include <editor_impl.h>
+
+namespace tscb {
+	class posix_reactor_service;
+}
 
 namespace elcc {
+namespace tscb {
 
-editor::editor(std::string const& argv0, watch_function const& watch)
-	: impl_(new impl::editor(argv0, watch))
-{ }
+/* elcc libtscb integration */
+class editor : public elcc::editor {
+public:
+	editor(std::string const&, ::tscb::posix_reactor_service &);
+	~editor();
+private:
+	void on_ioready(::tscb::ioready_events);
+	void toggle_watch(int, bool);
 
-editor::~editor()
-{ delete impl_; }
+	::tscb::posix_reactor_service & reactor_;
+	::tscb::connection conn_;
+};
 
-void editor::handle_io()
-{ impl_->handle_io(); }
+}}
 
-void editor::prompt(std::string const& prompt)
-{ impl_->prompt(prompt); }
-
-void editor::prompt_cb(prompt_function const& cb)
-{ impl_->prompt_cb(cb); }
-
-void editor::line_cb(line_function const& cb)
-{ impl_->line_cb(cb); }
-
-void editor::add_function(std::string const& name, std::string const& descr, editor_function const& cb)
-{ impl_->add_function(name, descr, cb); }
-
-void editor::bind(std::string const& key, std::string const& name)
-{ impl_->bind(key, name); }
-
-void editor::run()
-{ impl_->run(); }
-
-}
+#endif
