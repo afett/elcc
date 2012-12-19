@@ -47,11 +47,12 @@ public:
 	void add_function(std::string const&, std::string const&, editor_function const&);
 	function_return call(size_t , int) const;
 	void bind(std::string const&, std::string const&);
-	elcc::history & history();
 	void run();
 	~editor();
 
 private:
+	friend class elcc::editor;
+
 	static const char * custom_prompt_cb(EditLine *);
 	static const char * internal_prompt_cb(EditLine *);
 

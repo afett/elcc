@@ -172,11 +172,6 @@ void editor::bind(std::string const& key, std::string const& name)
 	el_set(el_, EL_BIND, key.c_str(), name.c_str(), NULL);
 }
 
-elcc::history & editor::history()
-{
-	return history_;
-}
-
 void editor::prompt_cb(prompt_function const& prompt)
 {
 	custom_prompt_ = prompt;

@@ -54,6 +54,9 @@ void editor::add_function(std::string const& name, std::string const& descr, edi
 void editor::bind(std::string const& key, std::string const& name)
 { impl_->bind(key, name); }
 
+elcc::history & editor::history() const
+{ return impl_->history_; }
+
 void editor::run()
 { impl_->run(); }
 

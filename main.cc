@@ -5,9 +5,11 @@
 #include <tscb/dispatch>
 
 #include <elcc/tscb/editor.h>
+#include <elcc/history.h>
 
-void on_line(std::string const&)
+void on_line(elcc::tscb::editor & el, std::string const& line)
 {
+	el.history().enter(line);
 }
 
 std::string fancy_prompt()
@@ -31,7 +33,7 @@ int main(int argc, char *argv[])
 	elcc::tscb::editor el("elcc", reactor);
 
 	el.prompt_cb(&fancy_prompt);
-	el.line_cb(&on_line);
+	el.line_cb(boost::bind(&on_line, boost::ref(el), _1));
 
 	bool stop(false);
 	el.add_function("exit", "exit at eof", boost::bind(&eof_handler, &reactor, &stop));
