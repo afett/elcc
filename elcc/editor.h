@@ -56,7 +56,7 @@ class editor;
 }
 
 typedef boost::function<std::string(void)> prompt_function;
-typedef boost::function<bool(std::string)> line_function;
+typedef boost::function<void(std::string)> line_function;
 
 // (un)watch a filedescriptor
 // @arg fd filedescriptor

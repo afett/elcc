@@ -6,10 +6,8 @@
 
 #include <elcc/tscb/editor.h>
 
-bool on_line(std::string const& line)
+void on_line(std::string const&)
 {
-	// fprintf(stderr, "%s", line.c_str());
-	return true;
 }
 
 std::string fancy_prompt()
