@@ -60,4 +60,16 @@ elcc::history & editor::history() const
 void editor::run()
 { impl_->run(); }
 
+std::string editor::line() const
+{ return impl_->line(); }
+
+std::string editor::cursor_line() const
+{ return impl_->cursor_line(); }
+
+size_t editor::cursor() const
+{ return impl_->cursor(); }
+
+void editor::insert(std::string const& str)
+{ return impl_->insert(str); }
+
 }

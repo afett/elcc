@@ -210,4 +210,27 @@ void editor::handle_io()
 	}
 }
 
+std::string editor::line() const
+{
+	LineInfo const* li(el_line(el_));
+	return std::string(li->buffer, li->lastchar - li->buffer);
+}
+
+std::string editor::cursor_line() const
+{
+	LineInfo const* li(el_line(el_));
+	return std::string(li->buffer, li->cursor - li->buffer);
+}
+
+size_t editor::cursor() const
+{
+	LineInfo const* li(el_line(el_));
+	return li->cursor - li->buffer;
+}
+
+void editor::insert(std::string const& str)
+{
+	el_insertstr(el_, str.c_str());
+}
+
 }} // namespace elcc::impl

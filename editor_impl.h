@@ -47,6 +47,10 @@ public:
 	function_return call(size_t , int) const;
 	void bind(std::string const&, std::string const&);
 	void run();
+	std::string line() const;
+	std::string cursor_line() const;
+	size_t cursor() const;
+	void insert(std::string const&);
 	~editor();
 
 private:

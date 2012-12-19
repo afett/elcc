@@ -103,6 +103,11 @@ public:
 	// get the history object
 	elcc::history & history() const;
 
+	std::string line() const;
+	std::string cursor_line() const;
+	size_t cursor() const;
+	void insert(std::string const&);
+
 	// run the editor
 	// this will set the terminal to raw mode
 	void run();
