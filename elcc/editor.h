@@ -57,6 +57,10 @@ class editor;
 
 typedef boost::function<std::string(void)> prompt_function;
 typedef boost::function<bool(std::string)> line_function;
+
+// (un)watch a filedescriptor
+// @arg fd filedescriptor
+// @on (un)watch it
 typedef boost::function<void(int, bool)> watch_function;
 
 // custom editor function, argument is the key entered
@@ -64,10 +68,14 @@ typedef boost::function<function_return(int)> editor_function;
 
 class editor {
 public:
-
-	editor(std::string const& argv0, watch_function const&);
+	// constructor
+	// @arg name name of the editor
+	// @arg watch toggle watch of a filedescriptor
+	editor(std::string const&, watch_function const&);
 	~editor();
 
+	// call this function to signal that the filedescriptor
+	// that was passed to the watch function is readable
 	void handle_io();
 
 	// set the prompt
@@ -76,7 +84,8 @@ public:
 	// set a callback for the prompt
 	void prompt_cb(prompt_function const& prompt);
 
-	// set a callback for each line
+	// set a callback for each line, the trailing
+	// newline is stripped.
 	void line_cb(line_function const& line);
 
 	// add a user defined editor function
