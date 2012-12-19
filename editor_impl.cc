@@ -184,9 +184,6 @@ void editor::prompt(std::string const& prompt)
 	el_set(el_, EL_PROMPT, &editor::internal_prompt_cb);
 }
 
-void editor::line_cb(line_function const& cb)
-{ on_line_ = cb; }
-
 editor::~editor()
 {
 	watch_(fd_, false);

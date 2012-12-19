@@ -43,7 +43,6 @@ public:
 	void handle_io();
 	void prompt(std::string const&);
 	void prompt_cb(prompt_function const&);
-	void line_cb(line_function const&);
 	void add_function(std::string const&, std::string const&, editor_function const&);
 	function_return call(size_t , int) const;
 	void bind(std::string const&, std::string const&);
