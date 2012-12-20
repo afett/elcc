@@ -21,6 +21,7 @@ elcc::function_return eof_handler(tscb::posix_reactor_service *reactor, bool *st
 {
 	*stop = true;
 	reactor->get_eventtrigger().set();
+	fprintf(stdout, "\n");
 	return elcc::eof;
 }
 
