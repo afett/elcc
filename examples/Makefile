@@ -1,24 +1,24 @@
-TARGET=line_edit_tscb
-
 CPPFLAGS = $(ELCC_CPPFLAGS) -I.. -I. 
 CXXFLAGS = $(ELCC_CXXFLAGS)
 LDFLAGS  = $(ELCC_LDFLAGS) -L ../src -lelcc
 
-SRC=
+SRC = \
+	line_edit.cc
 
 ifeq ($(ELCC_USE_TSCB),1)
 SRC += line_edit_tscb.cc
 endif
 
 OBJ=$(SRC:%.cc=%.o)
+TARGETS=$(OBJ:%.o=%)
 
-all: $(TARGET)
+all: $(TARGETS)
 
-$(TARGET): $(OBJ)
-	$(CXX) $(LDFLAGS) $^ -o $@
+$(TARGETS): $(OBJ)
+	$(CXX) $(LDFLAGS) $@.o -o $@
 
 clean:
-	rm -rf *.o $(TARGET)
+	rm -rf *.o $(TARGETS)
 
 .PHONY: all clean
 
