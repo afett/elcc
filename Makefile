@@ -1,9 +1,16 @@
+
+ELCC_DEBUG    = 1
+
 ELCC_CPPFLAGS =
-ELCC_CXXFLAGS = -g -O0 -Wall -Werror
+ELCC_CXXFLAGS = -Wall -Werror
 ELCC_LDFLAGS  =
 
 # FIXME must be on to build example for the moment
 ELCC_USE_TSCB = 1
+
+ifeq ($(ELCC_DEBUG),1)
+ELCC_CXXFLAGS += -g -O0
+endif
 
 export ELCC_CPPFLAGS ELCC_CXXFLAGS ELCC_LDFLAGS ELCC_USE_TSCB
 
