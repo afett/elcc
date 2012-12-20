@@ -17,14 +17,14 @@ export ELCC_CPPFLAGS ELCC_CXXFLAGS ELCC_LDFLAGS ELCC_USE_TSCB
 all: src examples
 
 lib:
-	make -C src
+	$(MAKE) -C src
 
 examples: lib
-	make -C examples
+	$(MAKE) -C examples
 
 clean:
-	make -C src clean
-	make -C examples clean
+	$(MAKE) -C src clean
+	$(MAKE) -C examples clean
 
 .PHONY: all clean
 
