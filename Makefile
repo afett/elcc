@@ -1,20 +1,23 @@
-TARGET=elcc_test
+ELCC_CPPFLAGS =
+ELCC_CXXFLAGS = -g -O0 -Wall -Werror
+ELCC_LDFLAGS  =
 
-CXXFLAGS=-g -O0 -Wall -Werror
-CPPFLAGS=-D_GNU_SOURCE -I include/ -I libedit-20120601-3.0/src/ -I./libtscb/include -I./boost.atomic -I.
-LDFLAGS=-L libedit-20120601-3.0/src/.libs -L./libtscb -ledit -ltscb 
+# FIXME must be on to build example for the moment
+ELCC_USE_TSCB = 1
 
-SRC=$(wildcard *.cc)
-OBJ=$(SRC:%.cc=%.o)
+export ELCC_CPPFLAGS ELCC_CXXFLAGS ELCC_LDFLAGS ELCC_USE_TSCB
 
-all: $(TARGET)
+all: src examples
 
-$(TARGET): $(OBJ)
-	$(CXX) $(LDFLAGS) $^ -o $@
+lib:
+	make -C src
+
+examples: lib
+	make -C examples
 
 clean:
-	rm -rf  $(TARGET) $(OBJ)
+	make -C src clean
+	make -C examples clean
 
 .PHONY: all clean
-
 
