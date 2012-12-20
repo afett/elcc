@@ -4,3 +4,4 @@ libtscb/
 boost.atomic/
 *.so
 examples/line_edit
+examples/line_edit_tscb
