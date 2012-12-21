@@ -5,6 +5,7 @@ CXXFLAGS = $(ELCC_CXXFLAGS) -fPIC
 LDFLAGS  = $(ELCC_LDFLAGS) -shared -Wl,--as-needed
 
 SRC=\
+	completion.cc   \
 	editor.cc       \
 	editor_impl.cc  \
 	history_impl.cc \
