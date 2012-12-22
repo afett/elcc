@@ -9,6 +9,7 @@
 
 #include <boost/bind.hpp>
 
+#include <elcc/completion.h>
 #include <elcc/editor.h>
 #include <elcc/history.h>
 
@@ -224,6 +225,32 @@ elcc::function_return eof_handler(dumb_ev::loop & loop)
 	return elcc::eof;
 }
 
+elcc::function_return completion_handler(elcc::editor & el)
+{
+	std::vector <std::string> cmds;
+	cmds.push_back("foo");
+	cmds.push_back("bar");
+	cmds.push_back("baz");
+
+	elcc::token_line tl(el.tokenized_line());
+
+	if (tl.line.empty()) {
+		return elcc::refresh_beep;
+	}
+
+	std::string word(
+		tl.line[tl.cursor_word].substr(0, tl.cursor_offset));
+
+	std::vector<std::string> completions(elcc::complete(word, cmds));
+	if (completions.empty()) {
+		return elcc::refresh_beep;
+	}
+
+	std::string completion(completions.back());
+	el.insert(completion.substr(tl.cursor_offset, std::string::npos));
+	return elcc::redisplay;
+}
+
 int main(int argc, char *argv[])
 {
 	setlocale(LC_CTYPE, "");
@@ -236,6 +263,9 @@ int main(int argc, char *argv[])
 
 	el.add_function("exit", "exit at eof", boost::bind(&eof_handler, boost::ref(loop)));
 	el.bind("^D", "exit");
+
+	el.add_function("complete", "commandline completion", boost::bind(&completion_handler, boost::ref(el)));
+	el.bind("^I", "complete");
 
 	el.run();
 
