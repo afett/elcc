@@ -10,7 +10,7 @@ It will run on linux and maybe other posix like OSes.
 
 dependencies:
  * libedit [http://www.thrysoee.dk/editline/]
- * boost (assert, bind, function and format) [http://www.boost.org/]
+ * boost (assert, bind, function) [http://www.boost.org/]
  * libtscb (optional) [http://www.chaoticmind.net/~hcb/projects/libtscb/]
 
 elcc itself is released under the following license:

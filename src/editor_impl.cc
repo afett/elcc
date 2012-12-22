@@ -27,11 +27,11 @@
 #include <errno.h>
 #include <fcntl.h>
 
+#include <sstream>
 #include <stdexcept>
 
 #include <boost/assert.hpp>
 #include <boost/bind.hpp>
-#include <boost/format.hpp>
 
 #include <editor_impl.h>
 
@@ -83,6 +83,13 @@ wrapper_function get_wrapper(size_t n)
 	return 0;
 }
 
+std::string errno_string(std::string const& msg)
+{
+	std::stringstream out;
+	out << msg << ": " << strerror(errno);
+	return out.str();
+}
+
 } // namespace
 
 namespace elcc {
@@ -126,16 +133,14 @@ void editor::run()
 
 	int flags=fcntl(fd_, F_GETFL);
 	if (flags == -1) {
-		throw std::runtime_error(boost::str(
-			boost::format("fcntl(%i, F_GETFL): %s")
-				% fd_ % strerror(errno)));
+		throw std::runtime_error(
+			errno_string("fcntl(F_GETFL)"));
 	}
 
 	flags |= O_NONBLOCK;
 	if (fcntl(fd_, F_SETFL, flags) == -1) {
-		throw std::runtime_error(boost::str(
-			boost::format("fcntl(%i, F_SETFL): %s")
-				% fd_ % strerror(errno)));
+		throw std::runtime_error(
+			errno_string("fcntl(F_SETFL)"));
 	}
 
 	watch_(fd_, true);
