@@ -37,7 +37,10 @@ history::history(size_t size)
 :
 	history_(history_init())
 {
-	BOOST_ASSERT(history_);
+	if (!history_) {
+		throw std::bad_alloc();
+	}
+
 	 ::history(history_, &event_, H_SETSIZE, size);
 	 ::history(history_, &event_, H_SETUNIQUE, 1);
 }
