@@ -247,6 +247,10 @@ elcc::function_return completion_handler(elcc::editor & el)
 	}
 
 	std::string completion(completions.back());
+	if (completions.size() == 1) {
+		completion += " ";
+	}
+
 	el.insert(completion.substr(tl.cursor_offset, std::string::npos));
 	return elcc::redisplay;
 }
