@@ -33,6 +33,7 @@
 
 #include <elcc/editor.h>
 #include <history_impl.h>
+#include <tokenizer.h>
 
 namespace elcc {
 namespace impl {
@@ -49,6 +50,7 @@ public:
 	void run();
 	std::string line() const;
 	std::string cursor_line() const;
+	token_line tokenized_line();
 	size_t cursor() const;
 	void insert(std::string const&);
 	~editor();
@@ -69,6 +71,7 @@ private:
 	editor_function functions_[32];
 	bool running_;
 	int fd_;
+	tokenizer tokenizer_;
 };
 
 }}

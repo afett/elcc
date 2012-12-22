@@ -100,7 +100,8 @@ editor::editor(std::string const& argv0, watch_function const& watch)
 	fn_index_(0),
 	functions_(),
 	running_(false),
-	fd_(-1)
+	fd_(-1),
+	tokenizer_()
 {
 	if (!el_) {
 		throw std::runtime_error("failed to initialize editline");
@@ -220,6 +221,12 @@ std::string editor::cursor_line() const
 {
 	LineInfo const* li(el_line(el_));
 	return std::string(li->buffer, li->cursor - li->buffer);
+}
+
+token_line editor::tokenized_line()
+{
+	LineInfo const* li(el_line(el_));
+	return tokenizer_(li);
 }
 
 size_t editor::cursor() const

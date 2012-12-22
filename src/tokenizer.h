@@ -2,17 +2,12 @@
 #define ELCC_TOKENIZER
 
 #include <string>
-#include <vector>
 
 #include <histedit.h>
 
-namespace elcc {
+#include <elcc/editor.h>
 
-struct token_line {
-	std::vector<std::string> line;
-	size_t cursor_word;
-	size_t cursor_offset;
-};
+namespace elcc {
 
 class tokenizer {
 public:
