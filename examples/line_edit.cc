@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include <iostream>
 #include <map>
 #include <vector>
 
@@ -234,11 +235,7 @@ elcc::function_return completion_handler(elcc::editor & el)
 
 	elcc::token_line tl(el.tokenized_line());
 
-	if (tl.line.empty()) {
-		return elcc::refresh_beep;
-	}
-
-	std::string word(
+	std::string word(tl.line.empty() ? "" :
 		tl.line[tl.cursor_word].substr(0, tl.cursor_offset));
 
 	std::vector<std::string> completions(elcc::complete(word, cmds));
@@ -247,8 +244,15 @@ elcc::function_return completion_handler(elcc::editor & el)
 	}
 
 	std::string completion(completions.back());
-	if (completions.size() == 1) {
+	completions.pop_back();
+	if (completions.empty()) {
 		completion += " ";
+	} else {
+		std::cout << std::endl;
+		std::vector<std::string>::iterator it(completions.begin());
+		for (; it != completions.end(); ++it) {
+			std::cout << *it << std::endl;
+		}
 	}
 
 	el.insert(completion.substr(tl.cursor_offset, std::string::npos));
