@@ -9,6 +9,7 @@ SRC=\
 	editor.cc       \
 	editor_impl.cc  \
 	history_impl.cc \
+	tokenizer.cc    \
 
 DEPS = libedit
 
