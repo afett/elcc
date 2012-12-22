@@ -123,7 +123,9 @@ editor::editor(std::string const& argv0, watch_function const& watch)
 
 void editor::run()
 {
-	BOOST_ASSERT(!running_);
+	if (running_) {
+		return;
+	}
 
 	el_set(el_, EL_UNBUFFERED, 1);
 	el_set(el_, EL_TERMINAL, NULL);
