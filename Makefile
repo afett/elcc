@@ -5,7 +5,6 @@ ELCC_CPPFLAGS =
 ELCC_CXXFLAGS = -Wall -Werror
 ELCC_LDFLAGS  =
 
-# FIXME must be on to build example for the moment
 ELCC_USE_TSCB = 1
 
 ifeq ($(ELCC_DEBUG),1)
