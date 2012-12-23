@@ -52,11 +52,14 @@ elcc::function_return completion_handler(elcc::editor * el, elcc::completion_fun
 	if (completions.empty()) {
 		completion += " ";
 	} else {
-		std::cout << std::endl;
-		elcc::word_list::const_iterator it(completions.begin());
-		for (; it != completions.end(); ++it) {
-			std::cout << *it << std::endl;
+		if (el->key_count()) {
+			std::cout << std::endl;
+			elcc::word_list::const_iterator it(completions.begin());
+			for (; it != completions.end(); ++it) {
+				std::cout << *it << std::endl;
+			}
 		}
+		el->count_key();
 	}
 
 	el->insert(completion.substr(tl.cursor_offset, std::string::npos));
