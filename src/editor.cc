@@ -37,7 +37,18 @@ editor::~editor()
 { delete impl_; }
 
 void editor::handle_io()
-{ impl_->handle_io(); }
+{
+	if (key_count_ > 0) {
+		--key_count_;
+	}
+	impl_->handle_io();
+}
+
+size_t editor::key_count() const
+{ return key_count_; }
+
+void editor::count_key()
+{ key_count_ = 2; }
 
 void editor::prompt(std::string const& prompt)
 { impl_->prompt(prompt); }

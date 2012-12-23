@@ -122,6 +122,13 @@ public:
 	size_t cursor() const;
 	void insert(std::string const&);
 
+	// detect consecutive input of the
+	// same character as in TAB TAB for completion
+	// to be used from within an editor function
+	// the counter is reset by handle_io()
+	size_t key_count() const;
+	void count_key();
+
 	// run the editor
 	// this will set the terminal to raw mode
 	void run();
@@ -131,6 +138,7 @@ private:
 	editor & operator=(editor const&);
 
 	impl::editor *impl_;
+	size_t key_count_;
 };
 
 }
