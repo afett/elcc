@@ -59,6 +59,7 @@ class editor;
 
 typedef boost::function<std::string(void)> prompt_function;
 typedef boost::function<void(std::string)> line_function;
+typedef boost::function<void(std::vector<std::string>)> tokenized_line_function;
 
 // (un)watch a filedescriptor
 // @arg fd filedescriptor
@@ -95,6 +96,10 @@ public:
 	// set a callback for each line, the trailing
 	// newline is stripped.
 	void line_cb(line_function const& line);
+
+	// set a callback for each line, the line is broken into tokens
+	// if both line callbacks are set, both will be called
+	void tokenized_line_cb(tokenized_line_function const& line);
 
 	// add a user defined editor function
 	// a maximum of 32 functions may be defined

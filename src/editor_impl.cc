@@ -103,6 +103,7 @@ editor::editor(std::string const& argv0, watch_function const& watch)
 	custom_prompt_(),
 	internal_prompt_(),
 	on_line_(),
+	on_tokenized_line_(),
 	history_(INT_MAX),
 	fn_index_(0),
 	functions_(),
@@ -213,7 +214,15 @@ void editor::handle_io()
 
 	if (line[count - 1] == '\n') {
 		el_set(el_, EL_UNBUFFERED, 0);
-		on_line_(std::string(line, count -1));
+
+		if (on_line_) {
+			on_line_(std::string(line, count -1));
+		}
+
+		if (on_tokenized_line_) {
+			on_tokenized_line_(tokenized_line().line);
+		}
+
 		el_set(el_, EL_UNBUFFERED, 1);
 	}
 }

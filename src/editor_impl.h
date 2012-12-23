@@ -66,6 +66,7 @@ private:
 	prompt_function custom_prompt_;
 	std::string internal_prompt_;
 	line_function on_line_;
+	tokenized_line_function on_tokenized_line_;
 	elcc::impl::history history_;
 	size_t fn_index_;
 	editor_function functions_[32];

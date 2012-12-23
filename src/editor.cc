@@ -48,6 +48,9 @@ void editor::prompt_cb(prompt_function const& cb)
 void editor::line_cb(line_function const& cb)
 { impl_->on_line_ = cb; }
 
+void editor::tokenized_line_cb(tokenized_line_function const& cb)
+{ impl_->on_tokenized_line_ = cb; }
+
 void editor::add_function(std::string const& name, std::string const& descr, editor_function const& cb)
 { impl_->add_function(name, descr, cb); }
 
