@@ -226,37 +226,14 @@ elcc::function_return eof_handler(dumb_ev::loop & loop)
 	return elcc::eof;
 }
 
-elcc::function_return completion_handler(elcc::editor & el)
+elcc::word_list completion_handler(elcc::word_list const&, size_t)
 {
 	std::vector <std::string> cmds;
 	cmds.push_back("foo");
 	cmds.push_back("bar");
 	cmds.push_back("baz");
 
-	elcc::token_line tl(el.tokenized_line());
-
-	std::string word(tl.line.empty() ? "" :
-		tl.line[tl.cursor_word].substr(0, tl.cursor_offset));
-
-	std::vector<std::string> completions(elcc::complete(word, cmds));
-	if (completions.empty()) {
-		return elcc::refresh_beep;
-	}
-
-	std::string completion(completions.back());
-	completions.pop_back();
-	if (completions.empty()) {
-		completion += " ";
-	} else {
-		std::cout << std::endl;
-		std::vector<std::string>::iterator it(completions.begin());
-		for (; it != completions.end(); ++it) {
-			std::cout << *it << std::endl;
-		}
-	}
-
-	el.insert(completion.substr(tl.cursor_offset, std::string::npos));
-	return elcc::redisplay;
+	return cmds;
 }
 
 int main(int argc, char *argv[])
@@ -272,9 +249,7 @@ int main(int argc, char *argv[])
 	el.add_function("exit", "exit at eof", boost::bind(&eof_handler, boost::ref(loop)));
 	el.bind("^D", "exit");
 
-	el.add_function("complete", "commandline completion", boost::bind(&completion_handler, boost::ref(el)));
-	el.bind("^I", "complete");
-
+	el.bind_completer("^I", boost::bind(&completion_handler, _1, _2));
 	el.run();
 
 	loop.run();
