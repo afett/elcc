@@ -68,7 +68,9 @@ elcc::function_return completion_handler(elcc::editor * el, elcc::completion_fun
 namespace elcc {
 
 editor::editor(std::string const& argv0, watch_function const& watch)
-	: impl_(new impl::editor(argv0, watch))
+:
+	impl_(new impl::editor(argv0, watch)),
+	key_count_(0)
 { }
 
 editor::~editor()
