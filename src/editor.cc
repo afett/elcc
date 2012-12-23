@@ -37,12 +37,12 @@ namespace {
 elcc::function_return completion_handler(elcc::editor * el, elcc::completion_function const& completer)
 {
 	elcc::token_line tl(el->tokenized_line());
-	std::vector <std::string> words(completer(tl.line, tl.cursor_word));
+	elcc::word_list words(completer(tl.line, tl.cursor_word));
 
 	std::string word(tl.line.empty() ? "" :
 		tl.line[tl.cursor_word].substr(0, tl.cursor_offset));
 
-	std::vector<std::string> completions(elcc::complete(word, words));
+	elcc::word_list completions(elcc::complete(word, words));
 	if (completions.empty()) {
 		return elcc::refresh_beep;
 	}
@@ -53,7 +53,7 @@ elcc::function_return completion_handler(elcc::editor * el, elcc::completion_fun
 		completion += " ";
 	} else {
 		std::cout << std::endl;
-		std::vector<std::string>::iterator it(completions.begin());
+		elcc::word_list::const_iterator it(completions.begin());
 		for (; it != completions.end(); ++it) {
 			std::cout << *it << std::endl;
 		}

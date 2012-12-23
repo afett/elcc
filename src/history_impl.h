@@ -27,11 +27,8 @@
 #ifndef ELCC_HISTORY_IMPL_H
 #define ELCC_HISTORY_IMPL_H
 
-#include <string>
-
 #include <histedit.h>
 
-#include <elcc/editor.h>
 #include <elcc/history.h>
 
 namespace elcc {

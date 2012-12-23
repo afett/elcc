@@ -27,10 +27,9 @@
 #ifndef EL_CC_EDITOR_H
 #define EL_CC_EDITOR_H
 
-#include <string>
-#include <vector>
-
 #include <boost/function.hpp>
+
+#include <elcc/common.h>
 
 namespace elcc {
 
@@ -59,7 +58,7 @@ class editor;
 
 typedef boost::function<std::string(void)> prompt_function;
 typedef boost::function<void(std::string)> line_function;
-typedef boost::function<void(std::vector<std::string>)> tokenized_line_function;
+typedef boost::function<void(word_list)> tokenized_line_function;
 
 // (un)watch a filedescriptor
 // @arg fd filedescriptor
@@ -70,7 +69,7 @@ typedef boost::function<void(int, bool)> watch_function;
 typedef boost::function<function_return(int)> editor_function;
 
 struct token_line {
-	std::vector<std::string> line;
+	word_list line;
 	size_t cursor_word;
 	size_t cursor_offset;
 };
@@ -78,7 +77,7 @@ struct token_line {
 // callback for the internal auto completer
 // must return a vector of words to which the current word
 // could be completed.
-typedef boost::function<std::vector<std::string>(std::vector<std::string>, size_t)> completion_function;
+typedef boost::function<word_list(word_list, size_t)> completion_function;
 
 class editor {
 public:
