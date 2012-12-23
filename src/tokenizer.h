@@ -16,6 +16,9 @@ public:
 	~tokenizer();
 
 private:
+	tokenizer(tokenizer const&);
+	tokenizer & operator=(tokenizer const&);
+
 	void reset();
 	Tokenizer *tokenizer_;
 };
