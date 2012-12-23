@@ -75,6 +75,11 @@ struct token_line {
 	size_t cursor_offset;
 };
 
+// callback for the internal auto completer
+// must return a vector of words to which the current word
+// could be completed.
+typedef boost::function<std::vector<std::string>(std::vector<std::string>, size_t)> completion_function;
+
 class editor {
 public:
 	// constructor
@@ -112,6 +117,11 @@ public:
 	// @arg key name of the key "^A" for example
 	// @arg function name of the custom or buildin function
 	void bind(std::string const&, std::string const&);
+
+	// install the internal auto completer
+	// @arg key key to which the completer is bound
+	// @arg completion_function function to determine the completions
+	void bind_completer(std::string const&, completion_function const&);
 
 	// get the history object
 	elcc::history & history() const;

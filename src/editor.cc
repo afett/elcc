@@ -24,8 +24,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <elcc/editor.h>
+#include <iostream>
+
+#include <boost/bind.hpp>
+
 #include <editor_impl.h>
+#include <elcc/completion.h>
+#include <elcc/editor.h>
+
+namespace {
+
+elcc::function_return completion_handler(elcc::editor * el, elcc::completion_function const& completer)
+{
+	elcc::token_line tl(el->tokenized_line());
+	std::vector <std::string> words(completer(tl.line, tl.cursor_word));
+
+	std::string word(tl.line.empty() ? "" :
+		tl.line[tl.cursor_word].substr(0, tl.cursor_offset));
+
+	std::vector<std::string> completions(elcc::complete(word, words));
+	if (completions.empty()) {
+		return elcc::refresh_beep;
+	}
+
+	std::string completion(completions.back());
+	completions.pop_back();
+	if (completions.empty()) {
+		completion += " ";
+	} else {
+		std::cout << std::endl;
+		std::vector<std::string>::iterator it(completions.begin());
+		for (; it != completions.end(); ++it) {
+			std::cout << *it << std::endl;
+		}
+	}
+
+	el->insert(completion.substr(tl.cursor_offset, std::string::npos));
+	return elcc::redisplay;
+}
+
+}
 
 namespace elcc {
 
@@ -67,6 +105,13 @@ void editor::add_function(std::string const& name, std::string const& descr, edi
 
 void editor::bind(std::string const& key, std::string const& name)
 { impl_->bind(key, name); }
+
+void editor::bind_completer(std::string const& key, completion_function const& completer)
+{
+	impl_->add_function("elcc-default-complete", "commandline completion",
+		boost::bind(&::completion_handler, this, completer));
+	impl_->bind(key, "elcc-default-complete");
+}
 
 elcc::history & editor::history() const
 { return impl_->history_; }
