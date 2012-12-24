@@ -128,9 +128,9 @@ void editor::run()
 		return;
 	}
 
-	el_set(el_, EL_UNBUFFERED, 1);
 	el_set(el_, EL_TERMINAL, NULL);
 	el_set(el_, EL_PREP_TERM, 1);
+	el_set(el_, EL_UNBUFFERED, 1);
 
 	fd_ = fileno(stdin);
 
