@@ -198,6 +198,7 @@ private:
 	{
 		if (!on) {
 			loop_.remove_watch(fd);
+			loop_.stop();
 			return;
 		}
 
