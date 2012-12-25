@@ -69,15 +69,15 @@ wrapper_function get_wrapper(size_t n)
 {
 #define CASE_N(index) case index: return &function_wrapper<index>;
 	switch (n) {
-		CASE_N(0x00); CASE_N(0x01); CASE_N(0x02); CASE_N(0x03);
-		CASE_N(0x04); CASE_N(0x05); CASE_N(0x06); CASE_N(0x07);
-		CASE_N(0x08); CASE_N(0x09); CASE_N(0x0a); CASE_N(0x0b);
-		CASE_N(0x0c); CASE_N(0x0d); CASE_N(0x0e); CASE_N(0x0f);
+	CASE_N(0x00); CASE_N(0x01); CASE_N(0x02); CASE_N(0x03);
+	CASE_N(0x04); CASE_N(0x05); CASE_N(0x06); CASE_N(0x07);
+	CASE_N(0x08); CASE_N(0x09); CASE_N(0x0a); CASE_N(0x0b);
+	CASE_N(0x0c); CASE_N(0x0d); CASE_N(0x0e); CASE_N(0x0f);
 
-		CASE_N(0x10); CASE_N(0x11); CASE_N(0x12); CASE_N(0x13);
-		CASE_N(0x14); CASE_N(0x15); CASE_N(0x16); CASE_N(0x17);
-		CASE_N(0x18); CASE_N(0x19); CASE_N(0x1a); CASE_N(0x1b);
-		CASE_N(0x1c); CASE_N(0x1d); CASE_N(0x1e); CASE_N(0x1f);
+	CASE_N(0x10); CASE_N(0x11); CASE_N(0x12); CASE_N(0x13);
+	CASE_N(0x14); CASE_N(0x15); CASE_N(0x16); CASE_N(0x17);
+	CASE_N(0x18); CASE_N(0x19); CASE_N(0x1a); CASE_N(0x1b);
+	CASE_N(0x1c); CASE_N(0x1d); CASE_N(0x1e); CASE_N(0x1f);
 	}
 #undef CASE_N
 	return 0;
@@ -229,7 +229,7 @@ void editor::handle_io()
 		el_set(el_, EL_UNBUFFERED, 0);
 
 		if (on_line_) {
-			on_line_(std::string(line, count -1));
+			on_line_(std::string(line, count - 1));
 		}
 
 		if (on_tokenized_line_) {

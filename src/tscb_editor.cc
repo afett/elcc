@@ -34,10 +34,10 @@ namespace elcc {
 namespace tscb {
 
 editor::editor(std::string const& name, ::tscb::posix_reactor_service & reactor)
-	:
-		elcc::editor(name, boost::bind(&editor::toggle_watch, this, _1, _2)),
-		reactor_(reactor),
-		conn_()
+:
+	elcc::editor(name, boost::bind(&editor::toggle_watch, this, _1, _2)),
+	reactor_(reactor),
+	conn_()
 { }
 
 void editor::toggle_watch(int fd, bool on)
