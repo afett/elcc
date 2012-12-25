@@ -60,6 +60,7 @@ private:
 
 	static const char * custom_prompt_cb(EditLine *);
 	static const char * internal_prompt_cb(EditLine *);
+	void unwatch();
 
 	watch_function watch_;
 	EditLine *el_;

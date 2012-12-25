@@ -193,9 +193,17 @@ void editor::prompt(std::string const& prompt)
 	el_set(el_, EL_PROMPT, &editor::internal_prompt_cb);
 }
 
+void editor::unwatch()
+{
+	if (watch_) {
+		watch_(fd_, false);
+		watch_ = 0;
+	}
+}
+
 editor::~editor()
 {
-	watch_(fd_, false);
+	unwatch();
 
 	el_set(el_, EL_PREP_TERM, 0);
 
@@ -209,6 +217,11 @@ void editor::handle_io()
 	int count(0);
 	const char *line(el_gets(el_, &count));
 	if (!line || count < 1) {
+		if (count < 0 && (errno == EAGAIN || errno == EINTR)) {
+			return;
+		}
+
+		unwatch();
 		return;
 	}
 
