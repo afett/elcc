@@ -131,7 +131,7 @@ public:
 
 			int ret(-1);
 			do {
-				ret = poll(pset.pfds(), pset.nfds(), 0);
+				ret = poll(pset.pfds(), pset.nfds(), -1);
 			} while (ret == -1 && errno == EINTR);
 
 			std::vector < boost::function<void(void)> > cb;
