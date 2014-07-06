@@ -25,7 +25,7 @@ elcc::function_return eof_handler(tscb::posix_reactor_service *reactor, bool *st
 	return elcc::eof;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
 	tscb::posix_reactor reactor;
 	tscb::connection conn;
@@ -45,4 +45,6 @@ int main(int argc, char *argv[])
 	while (!stop) {
 		reactor.dispatch();
 	}
+
+	return 0;
 }
