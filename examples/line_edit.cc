@@ -254,4 +254,5 @@ int main(int argc, char *argv[])
 	el.run();
 
 	loop.run();
+	return 0;
 }
