@@ -2,7 +2,7 @@
 ELCC_DEBUG    = 1
 
 ELCC_CPPFLAGS =
-ELCC_CXXFLAGS = -Wall -Werror
+ELCC_CXXFLAGS = -Wall -Wextra -Werror
 ELCC_LDFLAGS  =
 
 ELCC_USE_TSCB = 1
