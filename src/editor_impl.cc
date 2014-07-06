@@ -216,9 +216,17 @@ editor::~editor()
 void editor::handle_io()
 {
 	int count(0);
+
+	errno = 0;
 	const char *line(el_gets(el_, &count));
 	if (!line || count < 1) {
 		if (count < 0 && (errno == EAGAIN || errno == EINTR)) {
+			return;
+		}
+
+		if (errno == 0) {
+			// happens when backspace aka vi-yank is
+			// encountered at the beginning of the line
 			return;
 		}
 
