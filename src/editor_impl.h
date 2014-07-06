@@ -58,6 +58,23 @@ public:
 private:
 	friend class elcc::editor;
 
+	class editor_cb {
+	public:
+		editor_cb()
+		:
+			name(),
+			descr(),
+			fn()
+		{ }
+
+		std::string name;
+		std::string descr;
+		editor_function fn;
+	private:
+		editor_cb(editor_cb const&); // = deleted
+		editor_cb & operator=(editor_cb const&); // = deleted
+	};
+
 	static const char * custom_prompt_cb(EditLine *);
 	static const char * internal_prompt_cb(EditLine *);
 	void unwatch();
@@ -70,7 +87,7 @@ private:
 	tokenized_line_function on_tokenized_line_;
 	elcc::impl::history history_;
 	size_t fn_index_;
-	editor_function functions_[32];
+	editor_cb functions_[32];
 	bool running_;
 	int fd_;
 	tokenizer tokenizer_;

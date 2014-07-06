@@ -115,8 +115,6 @@ editor::editor(std::string const& argv0, watch_function const& watch)
 		throw std::runtime_error("failed to initialize editline");
 	}
 
-	memset(functions_, 0, sizeof(functions_));
-
 	el_set(el_, EL_CLIENTDATA, this);
 	el_set(el_, EL_EDITOR, "emacs");
 	el_set(el_, EL_HIST, &::history, history_.get());
@@ -153,7 +151,7 @@ void editor::run()
 
 function_return editor::call(size_t n, int c) const
 {
-	return functions_[n](c);
+	return functions_[n].fn(c);
 }
 
 const char * editor::internal_prompt_cb(EditLine *el)
@@ -170,8 +168,11 @@ void editor::add_function(std::string const& name, std::string const& descr, edi
 {
 	wrapper_function fn(get_wrapper(fn_index_));
 	if (fn) {
-		el_set(el_, EL_ADDFN, name.c_str(), descr.c_str(), fn);
-		functions_[fn_index_] = cb;
+		functions_[fn_index_].name = name;
+		functions_[fn_index_].descr = descr;
+		functions_[fn_index_].fn = cb;
+		el_set(el_, EL_ADDFN, functions_[fn_index_].name.c_str(),
+			functions_[fn_index_].descr.c_str(), fn);
 		++fn_index_;
 	}
 }
