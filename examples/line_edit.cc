@@ -237,7 +237,7 @@ elcc::word_list completion_handler(elcc::word_list const&, size_t)
 	return cmds;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
 	setlocale(LC_CTYPE, "");
 
