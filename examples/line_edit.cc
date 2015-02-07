@@ -227,12 +227,28 @@ elcc::function_return eof_handler(dumb_ev::loop & loop)
 	return elcc::eof;
 }
 
-elcc::word_list completion_handler(elcc::word_list const&, size_t)
+elcc::word_list completion_handler(elcc::word_list const&, size_t idx)
 {
-	std::vector <std::string> cmds;
-	cmds.push_back("foo");
-	cmds.push_back("bar");
-	cmds.push_back("baz");
+	std::vector<std::string> cmds;
+	switch (idx) {
+	case 0:
+		cmds.push_back("cmd_a");
+		cmds.push_back("cmd_b");
+		cmds.push_back("cmd_c");
+		break;
+	case 1:
+		cmds.push_back("arg0_a");
+		cmds.push_back("arg0_b");
+		cmds.push_back("arg0_c");
+		break;
+	case 2:
+		cmds.push_back("arg1_a");
+		cmds.push_back("arg1_b");
+		cmds.push_back("arg1_c");
+		break;
+	default:
+		break;
+	}
 
 	return cmds;
 }
