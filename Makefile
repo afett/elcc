@@ -49,6 +49,12 @@ $(EXAMPLE): $(EXAMPLE_OBJ) $(TARGET)
 $(TARGET): $(OBJ)
 	$(CXX) -o $@ $(OBJ) $(LDFLAGS) -shared $(LIBS)
 
+install: all
+	install -d $(PREFIX)/lib
+	install -m 755 $(TARGET) $(PREFIX)/lib/
+	install -d $(PREFIX)/include/elcc
+	install -m 644 elcc/*.h $(PREFIX)/include/elcc
+
 clean:
 	rm -f $(TARGET) $(EXAMPLE) $(ALL_OBJ)
 
