@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2013, 2014 Andreas Fett.
+ * Copyright (c) 2012, 2013, 2014, 2015 Andreas Fett.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -161,7 +161,13 @@ const char * editor::internal_prompt_cb(EditLine *el)
 
 const char * editor::custom_prompt_cb(EditLine *el)
 {
-	return get_editor(el)->custom_prompt_().c_str();
+	return get_editor(el)->custom_prompt();
+}
+
+const char * editor::custom_prompt()
+{
+	internal_prompt_ = custom_prompt_();
+	return internal_prompt_.c_str();
 }
 
 void editor::add_function(std::string const& name, std::string const& descr, editor_function const& cb)
