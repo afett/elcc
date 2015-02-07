@@ -120,7 +120,7 @@ editor::editor(std::string const& argv0, watch_function const& watch)
 	el_set(el_, EL_HIST, &::history, history_.get());
 }
 
-void editor::run()
+void editor::start()
 {
 	if (running_) {
 		return;

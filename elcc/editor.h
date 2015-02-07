@@ -138,9 +138,9 @@ public:
 	size_t key_count() const;
 	void count_key();
 
-	// run the editor
+	// start the editor
 	// this will set the terminal to raw mode
-	void run();
+	void start();
 
 private:
 	editor(editor const&);

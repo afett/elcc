@@ -123,8 +123,8 @@ void editor::bind_completer(std::string const& key, completion_function const& c
 elcc::history & editor::history() const
 { return impl_->history_; }
 
-void editor::run()
-{ impl_->run(); }
+void editor::start()
+{ impl_->start(); }
 
 std::string editor::line() const
 { return impl_->line(); }

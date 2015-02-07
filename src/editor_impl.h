@@ -47,7 +47,7 @@ public:
 	void add_function(std::string const&, std::string const&, editor_function const&);
 	function_return call(size_t , int) const;
 	void bind(std::string const&, std::string const&);
-	void run();
+	void start();
 	std::string line() const;
 	std::string cursor_line() const;
 	token_line tokenized_line();

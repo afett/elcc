@@ -267,7 +267,7 @@ int main()
 	el.bind("^D", "exit");
 
 	el.bind_completer("^I", boost::bind(&completion_handler, _1, _2));
-	el.run();
+	el.start();
 
 	loop.run();
 	return 0;

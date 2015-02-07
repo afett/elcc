@@ -40,7 +40,7 @@ int main()
 	el.add_function("exit", "exit at eof", boost::bind(&eof_handler, &reactor, &stop));
 	el.bind("^D", "exit");
 
-	el.run();
+	el.start();
 
 	while (!stop) {
 		reactor.dispatch();
