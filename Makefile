@@ -1,11 +1,11 @@
+ELCC_DEBUG ?= 
+ELCC_USE_TSCB ?= 
+PREFIX ?= /usr/local
 
-ELCC_DEBUG    = 1
-
-ELCC_CPPFLAGS =
-ELCC_CXXFLAGS = -Wall -Wextra -Werror
-ELCC_LDFLAGS  =
-
-ELCC_USE_TSCB = 1
+CXX = g++
+CXXFLAGS = -Wall -Wextra -Werror
+CPPFLAGS = -I. -Isrc -fPIC
+LDFLAGS = -L.
 
 ifeq ($(ELCC_DEBUG),1)
 ELCC_CXXFLAGS += -g -O0
@@ -13,19 +13,43 @@ else
 ELCC_CXXFLAGS += -O2
 endif
 
-export ELCC_CPPFLAGS ELCC_CXXFLAGS ELCC_LDFLAGS ELCC_USE_TSCB
+DEPS = libedit
 
-all: src examples
+SRC = \
+	src/completion.cc   \
+	src/editor.cc       \
+	src/editor_impl.cc  \
+	src/history_impl.cc \
+	src/tokenizer.cc    \
 
-lib:
-	$(MAKE) -C src
+EXAMPLE_SRC = \
+	examples/line_edit.cc
 
-examples: lib
-	$(MAKE) -C examples
+ifeq ($(ELCC_USE_TSCB),1)
+SRC += src/tscb_editor.cc
+EXAMPLE_SRC += examples/line_edit_tscb.cc
+DEPS += libtscb
+endif
+
+CXXFLAGS += $(shell pkg-config --cflags $(DEPS))
+LIBS = -Wl,--as-needed $(shell pkg-config --libs $(DEPS))
+
+OBJ = $(SRC:%.cc=%.o)
+EXAMPLE_OBJ = $(EXAMPLE_SRC:%.cc=%.o)
+EXAMPLE = $(EXAMPLE_SRC:%.cc=%)
+TARGET = libelcc.so
+
+ALL_OBJ = $(OBJ) $(EXAMPLE_OBJ)
+
+all: $(TARGET) $(EXAMPLE)
+
+$(EXAMPLE): $(EXAMPLE_OBJ) $(TARGET)
+	$(CXX) -o $@ $< $(LDFLAGS) $(LIBS) -lelcc
+
+$(TARGET): $(OBJ)
+	$(CXX) -o $@ $(OBJ) $(LDFLAGS) -shared $(LIBS)
 
 clean:
-	$(MAKE) -C src clean
-	$(MAKE) -C examples clean
+	rm -f $(TARGET) $(EXAMPLE) $(ALL_OBJ)
 
 .PHONY: all clean
-
