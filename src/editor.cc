@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2013, 2014 Andreas Fett.
+ * Copyright (c) 2012, 2013, 2014, 2015 Andreas Fett.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,8 +39,10 @@ elcc::function_return completion_handler(elcc::editor * el, elcc::completion_fun
 	elcc::token_line tl(el->tokenized_line());
 	elcc::word_list words(completer(tl.line, tl.cursor_word));
 
-	std::string word(tl.line.empty() ? "" :
-		tl.line[tl.cursor_word].substr(0, tl.cursor_offset));
+	std::string word;
+	if (tl.cursor_word < tl.line.size()) {
+		word = tl.line[tl.cursor_word].substr(0, tl.cursor_offset);
+	}
 
 	elcc::word_list completions(elcc::complete(word, words));
 	if (completions.empty()) {
