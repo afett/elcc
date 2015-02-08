@@ -30,7 +30,6 @@
 #include <sstream>
 #include <stdexcept>
 
-#include <boost/assert.hpp>
 #include <boost/bind.hpp>
 
 #include <editor_impl.h>
