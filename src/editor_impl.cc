@@ -94,7 +94,6 @@ std::string errno_string(std::string const& msg)
 namespace elcc {
 namespace impl {
 
-
 editor::editor(std::string const& argv0, watch_function const& watch)
 :
 	watch_(watch),

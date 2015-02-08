@@ -41,8 +41,8 @@ history::history(size_t size)
 		throw std::bad_alloc();
 	}
 
-	 ::history(history_, &event_, H_SETSIZE, size);
-	 ::history(history_, &event_, H_SETUNIQUE, 1);
+	::history(history_, &event_, H_SETSIZE, size);
+	::history(history_, &event_, H_SETUNIQUE, 1);
 }
 
 History *history::get() const
@@ -70,6 +70,5 @@ void history::append(std::string const& line)
 
 void history::enter(std::string const& line)
 { ::history(history_, &event_, H_ENTER, line.c_str()); }
-
 
 }}

@@ -29,7 +29,8 @@
 #include <tokenizer.h>
 namespace elcc {
 
-tokenizer::tokenizer(std::string const& ifs) :
+tokenizer::tokenizer(std::string const& ifs)
+:
 	tokenizer_(tok_init(ifs.empty() ? NULL : ifs.c_str()))
 {
 	if (!tokenizer_) {

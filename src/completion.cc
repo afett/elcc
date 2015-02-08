@@ -70,5 +70,3 @@ word_list complete(std::string const& string, word_list const& strings)
 }
 
 }
-
-
