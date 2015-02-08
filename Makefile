@@ -3,8 +3,8 @@ ELCC_USE_TSCB ?=
 PREFIX ?= /usr/local
 
 CXX = g++
-CXXFLAGS = -Wall -Wextra -Werror
-CPPFLAGS = -I. -Isrc -fPIC
+CXXFLAGS = -Wall -Wextra -Werror -fPIC
+CPPFLAGS = -I. -Isrc
 LDFLAGS = -L.
 
 ifeq ($(ELCC_DEBUG),1)
