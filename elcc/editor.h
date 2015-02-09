@@ -156,6 +156,9 @@ public:
 	void disable();
 	void refresh();
 
+	void async_output();
+	void async_output_flush();
+
 private:
 	editor(editor const&);
 	editor & operator=(editor const&);

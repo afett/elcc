@@ -107,7 +107,8 @@ editor::editor(std::string const& argv0, watch_function const& watch)
 	functions_(),
 	running_(false),
 	fd_(-1),
-	tokenizer_()
+	tokenizer_(),
+	async_output_(false)
 {
 	if (!el_) {
 		throw std::bad_alloc();
@@ -160,6 +161,16 @@ void editor::disable()
 void editor::refresh()
 {
 	el_set(el_, EL_REFRESH);
+}
+
+void editor::async_output()
+{
+	async_output_ = true;
+}
+
+void editor::async_output_flush()
+{
+	el_set(el_, EL_UNBUFFERED, 1);
 }
 
 function_return editor::call(size_t n, int c) const
@@ -264,7 +275,9 @@ void editor::handle_io()
 			on_tokenized_line_(tokenized_line().line);
 		}
 
-		el_set(el_, EL_UNBUFFERED, 1);
+		if (!async_output_) {
+			async_output_flush();
+		}
 	}
 }
 

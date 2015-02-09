@@ -51,6 +51,8 @@ public:
 	void enable();
 	void disable();
 	void refresh();
+	void async_output();
+	void async_output_flush();
 	std::string line() const;
 	std::string cursor_line() const;
 	token_line tokenized_line();
@@ -95,6 +97,7 @@ private:
 	bool running_;
 	int fd_;
 	tokenizer tokenizer_;
+	bool async_output_;
 };
 
 }}

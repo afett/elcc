@@ -143,6 +143,12 @@ void editor::disable()
 void editor::refresh()
 { impl_->refresh(); }
 
+void editor::async_output()
+{ impl_->async_output(); }
+
+void editor::async_output_flush()
+{ impl_->async_output_flush(); }
+
 std::string editor::line() const
 { return impl_->line(); }
 
