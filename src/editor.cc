@@ -72,6 +72,13 @@ elcc::function_return completion_handler(elcc::editor * el, elcc::completion_fun
 
 namespace elcc {
 
+token_line::token_line()
+:
+	line(),
+	cursor_word(0),
+	cursor_offset(0)
+{ }
+
 editor::editor(std::string const& argv0, watch_function const& watch)
 :
 	impl_(new impl::editor(argv0, watch)),

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2013, 2014 Andreas Fett.
+ * Copyright (c) 2012, 2013, 2014, 2015 Andreas Fett.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -69,6 +69,8 @@ typedef boost::function<void(int, bool)> watch_function;
 typedef boost::function<function_return(int)> editor_function;
 
 struct token_line {
+	token_line();
+
 	word_list line;
 	size_t cursor_word;
 	size_t cursor_offset;
