@@ -70,9 +70,10 @@ token_line tokenizer::operator()(const LineInfo *li)
 		res.cursor_offset = cursoro;
 		break;
 	case -1: // Internal error
+		throw std::bad_alloc();
+		break;
 	default:
-		reset();
-		throw std::runtime_error("failed to parse line");
+		throw std::logic_error("invalid tok_line() return code");
 		break;
 	}
 
