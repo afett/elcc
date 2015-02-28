@@ -74,6 +74,7 @@ namespace elcc {
 
 token_line::token_line()
 :
+	error(EUNKNOWN),
 	line(),
 	cursor_word(0),
 	cursor_offset(0)

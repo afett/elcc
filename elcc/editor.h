@@ -71,6 +71,14 @@ typedef boost::function<function_return(int)> editor_function;
 struct token_line {
 	token_line();
 
+	enum Error {
+		EUNKNOWN,
+		EOK = 0,
+		EQUOTED_RETURN,
+		EDOUBLE_QUOTE,
+		ESINGLE_QUOTE,
+	} error;
+
 	word_list line;
 	size_t cursor_word;
 	size_t cursor_offset;
