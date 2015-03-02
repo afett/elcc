@@ -113,7 +113,9 @@ public:
 	{
 		int fds[2];
 
-		pipe(fds);
+		if (pipe(fds) == -1) {
+			throw std::runtime_error("error in pipe()");
+		}
 		fcntl(fds[0], F_SETFL, FD_CLOEXEC|O_NONBLOCK);
 		fcntl(fds[1], F_SETFL, FD_CLOEXEC|O_NONBLOCK);
 
@@ -163,7 +165,9 @@ public:
 	void stop()
 	{
 		char x(42);
-		write(wakeup_fd_, &x, 1);
+		if (write(wakeup_fd_, &x, 1) < 0) {
+			throw std::runtime_error("error in write()");
+		}
 	}
 private:
 	void set_stop_flag()
