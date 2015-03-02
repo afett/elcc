@@ -110,7 +110,7 @@ editor::editor(std::string const& argv0, watch_function const& watch)
 	tokenizer_()
 {
 	if (!el_) {
-		throw std::runtime_error("failed to initialize editline");
+		throw std::bad_alloc();
 	}
 
 	el_set(el_, EL_CLIENTDATA, this);
