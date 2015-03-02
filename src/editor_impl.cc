@@ -147,6 +147,21 @@ void editor::start()
 	running_ = true;
 }
 
+void editor::enable()
+{
+	el_set(el_, EL_EDITMODE, 1);
+}
+
+void editor::disable()
+{
+	el_set(el_, EL_EDITMODE, 0);
+}
+
+void editor::refresh()
+{
+	el_set(el_, EL_REFRESH);
+}
+
 function_return editor::call(size_t n, int c) const
 {
 	return functions_[n].fn(c);

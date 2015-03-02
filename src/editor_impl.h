@@ -48,6 +48,9 @@ public:
 	function_return call(size_t , int) const;
 	void bind(std::string const&, std::string const&);
 	void start();
+	void enable();
+	void disable();
+	void refresh();
 	std::string line() const;
 	std::string cursor_line() const;
 	token_line tokenized_line();

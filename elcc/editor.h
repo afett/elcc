@@ -152,6 +152,10 @@ public:
 	// this will set the terminal to raw mode
 	void start();
 
+	void enable();
+	void disable();
+	void refresh();
+
 private:
 	editor(editor const&);
 	editor & operator=(editor const&);

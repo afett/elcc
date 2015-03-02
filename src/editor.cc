@@ -134,6 +134,15 @@ elcc::history & editor::history() const
 void editor::start()
 { impl_->start(); }
 
+void editor::enable()
+{ impl_->enable(); }
+
+void editor::disable()
+{ impl_->disable(); }
+
+void editor::refresh()
+{ impl_->refresh(); }
+
 std::string editor::line() const
 { return impl_->line(); }
 
