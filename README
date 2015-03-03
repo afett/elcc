@@ -15,3 +15,8 @@ elcc itself is released under a 2-clause BSD license. See LICENSE for details.
 An example integration with the libtscb reactor is provided, which requires
  * libtscb (optional) [http://www.chaoticmind.net/~hcb/projects/libtscb/]
 use USE_TSCB_EXAMPLE=1 make ... to build it.
+
+runtime exceptions:
+libelcc will only throw std::bad_alloc and std::logic_error. Those are
+used for out of memory conditions and programming errors in libelcc and
+libedit.
