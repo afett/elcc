@@ -1,5 +1,5 @@
 ELCC_DEBUG ?= 
-ELCC_USE_TSCB ?= 
+ELCC_TSCB_EXAMPLE ?=
 PREFIX ?= /usr/local
 
 CXX = g++
@@ -25,8 +25,7 @@ SRC = \
 EXAMPLE_SRC = \
 	examples/line_edit.cc
 
-ifeq ($(ELCC_USE_TSCB),1)
-SRC += src/tscb_editor.cc
+ifeq ($(ELCC_TSCB_EXAMPLE),1)
 EXAMPLE_SRC += examples/line_edit_tscb.cc
 DEPS += libtscb
 endif

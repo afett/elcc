@@ -3,15 +3,15 @@ elcc C++ libedit wrapper [https://github.com/afett/elcc]
 elcc is a wrapper for libedit. It is intended to be used with
 (for example poll() based) event loops.
 
-An integration with the libtscb reactor is provided.
-
 elcc is (2 Clause) BSD licensed like libedit.
 It will run on linux and maybe other posix like OSes.
 
 dependencies:
  * libedit [http://www.thrysoee.dk/editline/]
  * boost (bind, function) [http://www.boost.org/]
- * libtscb (optional) [http://www.chaoticmind.net/~hcb/projects/libtscb/]
 
 elcc itself is released under a 2-clause BSD license. See LICENSE for details.
 
+An example integration with the libtscb reactor is provided, which requires
+ * libtscb (optional) [http://www.chaoticmind.net/~hcb/projects/libtscb/]
+use USE_TSCB_EXAMPLE=1 make ... to build it.
