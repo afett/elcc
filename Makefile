@@ -2,7 +2,7 @@ ELCC_DEBUG ?=
 ELCC_TSCB_EXAMPLE ?=
 PREFIX ?= /usr/local
 
-CXX = g++
+CXX ?= g++
 CXXFLAGS = -Wall -Wextra -Werror -fPIC
 CPPFLAGS = -I. -Isrc
 LDFLAGS = -L.
