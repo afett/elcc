@@ -3,7 +3,7 @@ ELCC_TSCB_EXAMPLE ?=
 PREFIX ?= /usr/local
 
 CXX ?= g++
-CXXFLAGS = -Wall -Wextra -Werror -fPIC
+CXXFLAGS = -Wall -Wextra -Werror -fPIC -std=c++11
 CPPFLAGS = -I. -Isrc
 LDFLAGS = -L.
 
