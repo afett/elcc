@@ -26,11 +26,11 @@
 
 #include <errno.h>
 #include <fcntl.h>
+#include <limits.h>
+#include <string.h>
 
 #include <sstream>
 #include <stdexcept>
-
-#include <boost/bind.hpp>
 
 #include <editor_impl.h>
 
