@@ -47,7 +47,7 @@ token_line tokenizer::operator()(const LineInfo *li)
 	int argc, cursorc, cursoro;
 
 	// see libedit/src/tokenizer.c: tok_line()
-	int ret(tok_line(tokenizer_, li, &argc, &argv, &cursorc, &cursoro));
+	auto ret(tok_line(tokenizer_, li, &argc, &argv, &cursorc, &cursoro));
 	return handle_result(ret, argc, argv, cursorc, cursoro);
 }
 
@@ -57,7 +57,7 @@ token_line tokenizer::operator()(std::string const& li)
 	int argc;
 
 	// see libedit/src/tokenizer.c: tok_str()
-	int ret(tok_str(tokenizer_, li.c_str(), &argc, &argv));
+	auto ret(tok_str(tokenizer_, li.c_str(), &argc, &argv));
 	return handle_result(ret, argc, argv, 0, 0);
 }
 
@@ -75,7 +75,7 @@ token_line tokenizer::handle_result(int ret, int argc, const char **argv, int cu
 		res.error = token_line::ESINGLE_QUOTE;
 		break;
 	case  0:
-		for (int i(0); i < argc; ++i) {
+		for (auto i(0); i < argc; ++i) {
 			res.line.push_back(argv[i]);
 		}
 

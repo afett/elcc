@@ -38,8 +38,8 @@ bool begins_not_with(std::string const& s1, std::string const& s2)
 
 std::string find_prefix(elcc::word_list const& strings)
 {
-	elcc::word_list::const_iterator it(strings.begin());
-	std::string prefix(*it++);
+	auto it(strings.begin());
+	auto prefix(*it++);
 
 	for (; it != strings.end(); ++it) {
 		while (begins_not_with(prefix, *it)) {

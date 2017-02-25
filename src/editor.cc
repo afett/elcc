@@ -34,20 +34,20 @@ namespace {
 
 elcc::function_return completion_handler(elcc::editor * el, elcc::completion_function const& completer)
 {
-	elcc::token_line tl(el->tokenized_line());
-	elcc::word_list words(completer(tl.line, tl.cursor_word));
+	auto tl(el->tokenized_line());
+	auto words(completer(tl.line, tl.cursor_word));
 
 	std::string word;
 	if (tl.cursor_word < tl.line.size()) {
 		word = tl.line[tl.cursor_word].substr(0, tl.cursor_offset);
 	}
 
-	elcc::word_list completions(elcc::complete(word, words));
+	auto completions(elcc::complete(word, words));
 	if (completions.empty()) {
 		return elcc::refresh_beep;
 	}
 
-	std::string completion(completions.back());
+	auto completion(completions.back());
 	completions.pop_back();
 	if (completions.empty()) {
 		completion += " ";

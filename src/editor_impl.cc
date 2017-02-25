@@ -46,7 +46,7 @@ elcc::impl::editor * get_editor(EditLine *el)
 template <int N>
 unsigned char function_wrapper(EditLine *el, int c)
 {
-	elcc::impl::editor *editor(get_editor(el));
+	auto *editor(get_editor(el));
 	switch (editor->call(N, c)) {
 	case elcc::normal:       return CC_NORM;
 	case elcc::newline:      return CC_NEWLINE;
@@ -131,7 +131,7 @@ void editor::start()
 
 	fd_ = fileno(stdin);
 
-	int flags=fcntl(fd_, F_GETFL);
+	auto flags(fcntl(fd_, F_GETFL));
 	if (flags == -1) {
 		throw std::runtime_error(
 			errno_string("fcntl(F_GETFL)"));
@@ -196,7 +196,7 @@ const char * editor::custom_prompt()
 
 void editor::add_function(std::string const& name, std::string const& descr, editor_function const& cb)
 {
-	wrapper_function fn(get_wrapper(fn_index_));
+	auto fn(get_wrapper(fn_index_));
 	if (fn) {
 		functions_[fn_index_].name = name;
 		functions_[fn_index_].descr = descr;
@@ -248,7 +248,7 @@ void editor::handle_io()
 	int count(0);
 
 	errno = 0;
-	const char *line(el_gets(el_, &count));
+	auto line(el_gets(el_, &count));
 	if (!line || count < 1) {
 		if (count < 0 && (errno == EAGAIN || errno == EINTR)) {
 			return;
@@ -283,25 +283,25 @@ void editor::handle_io()
 
 std::string editor::line() const
 {
-	LineInfo const* li(el_line(el_));
+	auto li(el_line(el_));
 	return std::string(li->buffer, li->lastchar - li->buffer);
 }
 
 std::string editor::cursor_line() const
 {
-	LineInfo const* li(el_line(el_));
+	auto li(el_line(el_));
 	return std::string(li->buffer, li->cursor - li->buffer);
 }
 
 token_line editor::tokenized_line()
 {
-	LineInfo const* li(el_line(el_));
+	auto li(el_line(el_));
 	return tokenizer_(li);
 }
 
 size_t editor::cursor() const
 {
-	LineInfo const* li(el_line(el_));
+	auto li(el_line(el_));
 	return li->cursor - li->buffer;
 }
 
