@@ -28,6 +28,7 @@
 #define EL_CC_EDITOR_H
 
 #include <functional>
+#include <memory>
 
 #include <elcc/common.h>
 
@@ -167,7 +168,7 @@ private:
 	editor(editor const&);
 	editor & operator=(editor const&);
 
-	impl::editor *impl_;
+	std::unique_ptr<impl::editor> impl_;
 	size_t key_count_;
 };
 

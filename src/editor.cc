@@ -84,7 +84,7 @@ editor::editor(std::string const& argv0, watch_function const& watch)
 { }
 
 editor::~editor()
-{ delete impl_; }
+{ }
 
 void editor::handle_io()
 {
