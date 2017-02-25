@@ -8,8 +8,6 @@
 #include <map>
 #include <vector>
 
-#include <boost/bind.hpp>
-
 #include <elcc/completion.h>
 #include <elcc/editor.h>
 #include <elcc/history.h>
@@ -19,7 +17,7 @@
 namespace dumb_ev {
 
 struct watch {
-	typedef boost::function<void(short)> callback;
+	typedef std::function<void(short)> callback;
 
 	watch()
 		:
@@ -120,7 +118,7 @@ public:
 		fcntl(fds[1], F_SETFL, FD_CLOEXEC|O_NONBLOCK);
 
 		wakeup_fd_ = fds[1];
-		add_watch(fds[0], POLLIN, boost::bind(&loop::set_stop_flag, this));
+		add_watch(fds[0], POLLIN, std::bind(&loop::set_stop_flag, this));
 	}
 
 
@@ -136,15 +134,15 @@ public:
 				ret = poll(pset.pfds(), pset.nfds(), -1);
 			} while (ret == -1 && errno == EINTR);
 
-			std::vector < boost::function<void(void)> > cb;
+			std::vector < std::function<void(void)> > cb;
 			for (size_t i(0); i < pset.nfds(); ++i) {
 				if (pset.revents(i)) {
-					cb.push_back(boost::bind(
+					cb.push_back(std::bind(
 						watches_[pset.fd(i)].cb, pset.revents(i)));
 				}
 			}
 
-			std::vector < boost::function<void(void)> >::iterator cb_it(cb.begin());
+			std::vector < std::function<void(void)> >::iterator cb_it(cb.begin());
 			for (; cb_it != cb.end(); ++cb_it) {
 				(*cb_it)();
 			}
@@ -152,7 +150,7 @@ public:
 		} while (!stop_flag_);
 	}
 
-	void add_watch(int fd, short events, boost::function<void(short)> const& cb)
+	void add_watch(int fd, short events, std::function<void(short)> const& cb)
 	{
 		watches_[fd] = watch(fd, events, cb);
 	}
@@ -184,7 +182,8 @@ class editor : public elcc::editor {
 public:
 	editor(std::string const& name, loop & loop)
 		:
-			elcc::editor(name, boost::bind(&editor::toggle_watch, this, _1, _2)),
+			elcc::editor(name, std::bind(&editor::toggle_watch, this,
+				std::placeholders::_1, std::placeholders::_2)),
 			loop_(loop)
 	{
 	}
@@ -206,7 +205,8 @@ private:
 			return;
 		}
 
-		loop_.add_watch(fd, POLLIN, boost::bind(&editor::on_watch_event, this, _1));
+		loop_.add_watch(fd, POLLIN, std::bind(&editor::on_watch_event,
+			this, std::placeholders::_1));
 	}
 
 	loop & loop_;
@@ -265,12 +265,12 @@ int main()
 	dumb_ev::editor el("elcc", loop);
 
 	el.prompt_cb(&fancy_prompt);
-	el.line_cb(boost::bind(&on_line, boost::ref(el), _1));
+	el.line_cb(std::bind(&on_line, std::ref(el), std::placeholders::_1));
 
-	el.add_function("exit", "exit at eof", boost::bind(&eof_handler, boost::ref(loop)));
+	el.add_function("exit", "exit at eof", std::bind(&eof_handler, std::ref(loop)));
 	el.bind("^D", "exit");
 
-	el.bind_completer("^I", boost::bind(&completion_handler, _1, _2));
+	el.bind_completer("^I", std::bind(&completion_handler, std::placeholders::_1, std::placeholders::_2));
 	el.start();
 
 	loop.run();

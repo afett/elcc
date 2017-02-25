@@ -1,7 +1,6 @@
 #include <unistd.h>
 #include <stdio.h>
 
-#include <boost/bind.hpp>
 #include <tscb/dispatch>
 
 #include <elcc/editor.h>
@@ -25,7 +24,7 @@ private:
 
 editor::editor(std::string const& name, ::tscb::posix_reactor_service & reactor)
 :
-	elcc::editor(name, boost::bind(&editor::toggle_watch, this, _1, _2)),
+	elcc::editor(name, std::bind(&editor::toggle_watch, this, _1, _2)),
 	reactor_(reactor),
 	conn_()
 { }
@@ -37,7 +36,7 @@ void editor::toggle_watch(int fd, bool on)
 		return;
 	}
 
-	conn_ = reactor_.watch(boost::bind(&editor::on_ioready, this, _1),
+	conn_ = reactor_.watch(std::bind(&editor::on_ioready, this, _1),
 		fd, ::tscb::ioready_input);
 }
 
@@ -84,10 +83,10 @@ int main()
 	elcc::tscb::editor el("elcc", reactor);
 
 	el.prompt_cb(&fancy_prompt);
-	el.line_cb(boost::bind(&on_line, boost::ref(el), _1));
+	el.line_cb(std::bind(&on_line, std::ref(el), _1));
 
 	bool stop(false);
-	el.add_function("exit", "exit at eof", boost::bind(&eof_handler, &reactor, &stop));
+	el.add_function("exit", "exit at eof", std::bind(&eof_handler, &reactor, &stop));
 	el.bind("^D", "exit");
 
 	el.start();

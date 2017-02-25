@@ -25,8 +25,7 @@
  */
 
 #include <algorithm>
-
-#include <boost/bind.hpp>
+#include <functional>
 
 #include <elcc/completion.h>
 
@@ -60,7 +59,7 @@ word_list complete(std::string const& string, word_list const& strings)
 	word_list res;
 	// sigh ...
 	std::remove_copy_if(strings.begin(), strings.end(),
-		std::back_inserter(res), boost::bind(begins_not_with, string, _1));
+		std::back_inserter(res), std::bind(begins_not_with, string, std::placeholders::_1));
 
 	if (res.size() > 1) {
 		res.push_back(find_prefix(res));

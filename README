@@ -7,11 +7,9 @@ elcc will run on linux and maybe other posix like OSes.
 
 dependencies:
  * libedit [http://www.thrysoee.dk/editline/]
- * boost (bind, function) [http://www.boost.org/]
 
 licensing:
 * elcc itself is released under a 2-clause BSD license. See LICENSE for details.
-* boost is licensed under the Boost Software license: http://www.boost.org/users/license.html
 * libedit is using a 3 clause BSD license: http://www.netbsd.org/about/redistribution.html
 
 An example integration with the libtscb reactor is provided, which requires

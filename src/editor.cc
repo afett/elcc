@@ -26,8 +26,6 @@
 
 #include <iostream>
 
-#include <boost/bind.hpp>
-
 #include <editor_impl.h>
 #include <elcc/completion.h>
 #include <elcc/editor.h>
@@ -124,7 +122,7 @@ void editor::bind(std::string const& key, std::string const& name)
 void editor::bind_completer(std::string const& key, completion_function const& completer)
 {
 	impl_->add_function("elcc-default-complete", "commandline completion",
-		boost::bind(&::completion_handler, this, completer));
+		std::bind(&::completion_handler, this, completer));
 	impl_->bind(key, "elcc-default-complete");
 }
 
