@@ -54,9 +54,8 @@ elcc::function_return completion_handler(elcc::editor * el, elcc::completion_fun
 	} else {
 		if (el->key_count()) {
 			std::cout << std::endl;
-			elcc::word_list::const_iterator it(completions.begin());
-			for (; it != completions.end(); ++it) {
-				std::cout << *it << std::endl;
+			for (auto completion: completions) {
+				std::cout << completion << std::endl;
 			}
 		}
 		el->count_key();
