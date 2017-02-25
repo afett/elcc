@@ -31,9 +31,9 @@
 
 namespace {
 
-bool begins_not_with(std::string const& s1, std::string const& s2)
+bool begins_with(std::string const& s1, std::string const& s2)
 {
-	return s2.compare(0, s1.size(), s1) != 0;
+	return s2.compare(0, s1.size(), s1) == 0;
 }
 
 std::string find_prefix(elcc::word_list const& strings)
@@ -42,7 +42,7 @@ std::string find_prefix(elcc::word_list const& strings)
 	auto prefix(*it++);
 
 	for (; it != strings.end(); ++it) {
-		while (begins_not_with(prefix, *it)) {
+		while (!begins_with(prefix, *it)) {
 			prefix.resize(prefix.size() - 1);
 		}
 	}
@@ -57,9 +57,8 @@ namespace elcc {
 word_list complete(std::string const& string, word_list const& strings)
 {
 	word_list res;
-	// sigh ...
-	std::remove_copy_if(strings.begin(), strings.end(),
-		std::back_inserter(res), std::bind(begins_not_with, string, std::placeholders::_1));
+	std::copy_if(strings.begin(), strings.end(),
+		std::back_inserter(res), std::bind(begins_with, string, std::placeholders::_1));
 
 	if (res.size() > 1) {
 		res.push_back(find_prefix(res));
