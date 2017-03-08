@@ -155,7 +155,7 @@ std::string editor::line() const
 std::string editor::cursor_line() const
 { return impl_->cursor_line(); }
 
-token_line editor::tokenized_line()
+token_line editor::tokenized_line() const
 { return impl_->tokenized_line(); }
 
 size_t editor::cursor() const

@@ -142,7 +142,7 @@ public:
 
 	std::string line() const;
 	std::string cursor_line() const;
-	token_line tokenized_line();
+	token_line tokenized_line() const;
 	size_t cursor() const;
 	void insert(std::string const&);
 
