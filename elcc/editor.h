@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2013, 2014, 2015 Andreas Fett.
+ * Copyright (c) 2012 - 2015, 2017 Andreas Fett.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -83,6 +83,8 @@ struct token_line {
 	size_t cursor_word;
 	size_t cursor_offset;
 };
+
+token_line tokenize(std::string const&);
 
 // callback for the internal auto completer
 // must return a vector of words to which the current word

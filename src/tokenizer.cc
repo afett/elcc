@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2013, 2014, 2015 Andreas Fett.
+ * Copyright (c) 2012 - 2015, 2017 Andreas Fett.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,21 @@ token_line tokenizer::operator()(const LineInfo *li)
 
 	// see libedit/src/tokenizer.c: tok_line()
 	int ret(tok_line(tokenizer_, li, &argc, &argv, &cursorc, &cursoro));
+	return handle_result(ret, argc, argv, cursorc, cursoro);
+}
 
+token_line tokenizer::operator()(std::string const& li)
+{
+	const char **argv;
+	int argc;
+
+	// see libedit/src/tokenizer.c: tok_str()
+	int ret(tok_str(tokenizer_, li.c_str(), &argc, &argv));
+	return handle_result(ret, argc, argv, 0, 0);
+}
+
+token_line tokenizer::handle_result(int ret, int argc, const char **argv, int cursorc, int cursoro)
+{
 	token_line res;
 	switch (ret) {
 	case  3: // Quoted return
@@ -84,6 +98,11 @@ token_line tokenizer::operator()(const LineInfo *li)
 tokenizer::~tokenizer()
 {
 	tok_end(tokenizer_);
+}
+
+token_line tokenize(std::string const& line)
+{
+	return tokenizer()(line);
 }
 
 }
