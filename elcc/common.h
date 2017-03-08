@@ -8,6 +8,6 @@ namespace elcc {
 
 typedef std::vector<std::string> word_list;
 
-};
+}
 
 #endif
