@@ -84,6 +84,9 @@ struct token_line {
 	size_t cursor_offset;
 };
 
+// tokenize with the same rules as editor::tokenized_line_cb does
+// a trailing newline is stripped.
+// @arg string to be split into words
 token_line tokenize(std::string const&);
 
 // callback for the internal auto completer
