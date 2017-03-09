@@ -72,7 +72,6 @@ struct token_line {
 	token_line();
 
 	enum Error {
-		EUNKNOWN,
 		EOK = 0,
 		EQUOTED_RETURN,
 		EDOUBLE_QUOTE,

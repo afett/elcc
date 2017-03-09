@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, 2013, 2014, 2015 Andreas Fett.
+ * Copyright (c) 2012 - 2015, 2017 Andreas Fett.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -74,7 +74,7 @@ namespace elcc {
 
 token_line::token_line()
 :
-	error(EUNKNOWN),
+	error(EOK),
 	line(),
 	cursor_word(0),
 	cursor_offset(0)

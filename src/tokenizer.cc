@@ -75,7 +75,6 @@ token_line tokenizer::handle_result(int ret, int argc, const char **argv, int cu
 		res.error = token_line::ESINGLE_QUOTE;
 		break;
 	case  0:
-		res.error = token_line::EOK;
 		for (int i(0); i < argc; ++i) {
 			res.line.push_back(argv[i]);
 		}
