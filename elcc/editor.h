@@ -165,8 +165,8 @@ public:
 	void async_output_flush();
 
 private:
-	editor(editor const&);
-	editor & operator=(editor const&);
+	editor(editor const&) = delete;
+	editor & operator=(editor const&) = delete;
 
 	std::unique_ptr<impl::editor> impl_;
 	size_t key_count_;
